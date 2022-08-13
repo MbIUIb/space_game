@@ -9,10 +9,10 @@ class Starship(Sprite):
         self.x = x
         self.y = y
         image = pygame.image.load('res/icon.png')
-        self.image = pygame.transform.scale(image, (image.get_width() // 4, image.get_height() // 4))
+        self.image = pygame.transform.scale(image, (image.get_width() // 4, image.get_height() // 4)).convert_alpha()
         self.rect = self.image.get_rect(center=(self.x, self.y))
         self.health = 100
-        self.speed = 10
+        self.speed = 7
 
     def coordinates_update(self):
         self.rect = self.image.get_rect(center=(self.x, self.y))
@@ -44,3 +44,16 @@ class Starship(Sprite):
 
         if self.y > screen_heidth:
             self.y = screen_heidth-5
+
+    def follow_mouse(self, mouse_pos):
+        if self.x < mouse_pos[0]:
+            self.x += self.speed
+        elif self.x > mouse_pos[0]:
+            self.x -= self.speed
+
+        if self.y < mouse_pos[1]:
+            self.y += self.speed
+        elif self.y > mouse_pos[1]:
+            self.y -= self.speed
+
+        self.coordinates_update()
