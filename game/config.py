@@ -4,7 +4,8 @@ SPACE = (3, 4, 49)
 # STAR_lvl2 = (198, 198, 206)
 # STAR_lvl3 = (109, 102, 114)
 
-screen_width = 600
+# screen
+screen_width = 800
 screen_heidth = 800
 
 FPS = 60
