@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
-from config import screen_width, screen_heidth
+from config import screen_width, screen_height
 
 
 class Starship(Sprite):
@@ -40,8 +40,8 @@ class Starship(Sprite):
 
     def down_movement(self):
         self.y += self.speed
-        if self.y > screen_heidth:
-            self.y = screen_heidth-5
+        if self.y > screen_height:
+            self.y = screen_height-5
         self.coords_update()
 
     def follow_mouse(self, mouse_pos):

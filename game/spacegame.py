@@ -7,7 +7,7 @@ from background_stars import create_stars
 
 pygame.init()
 
-screen = pygame.display.set_mode((screen_width, screen_heidth))
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 icon = pygame.image.load('assets/icon.png')
 pygame.display.set_icon(icon)
@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 pygame.time.set_timer(pygame.USEREVENT, 70)
 
 stars = pygame.sprite.Group()
-hero = Starship(screen_width//2, screen_heidth//2)
+hero = Starship(screen_width//2, screen_height//2)
 
 mouse_control = True
 mouse_visible = True
@@ -54,7 +54,7 @@ while game:
 
     # secondly drawing
     stars.draw(screen)
-    stars.update(screen_heidth)
+    stars.update(screen_height)
 
     # third drawing
     screen.blit(hero.image, hero.rect)

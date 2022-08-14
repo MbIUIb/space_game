@@ -6,7 +6,7 @@ SPACE = (3, 4, 49)
 
 # screen
 screen_width = 800
-screen_heidth = 800
+screen_height = 800
 
 FPS = 60
 
