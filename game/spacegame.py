@@ -1,7 +1,10 @@
+import pygame
+
 from config import *
 from starship import Starship
 from background_stars import create_stars
-import pygame
+
+
 pygame.init()
 
 screen = pygame.display.set_mode((screen_width, screen_heidth))
@@ -22,6 +25,8 @@ mouse_visible = True
 pygame.mouse.set_visible(mouse_visible)
 
 game = True
+
+
 while game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
