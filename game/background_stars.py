@@ -8,7 +8,7 @@ from config import screen_width, star_config
 class Star(Sprite):
     def __init__(self, x, speed, filename, group):
         Sprite.__init__(self)
-        self.image = pygame.image.load('res/'+filename).convert_alpha()
+        self.image = pygame.image.load('assets/'+filename).convert_alpha()
         self.rect = self.image.get_rect(center=(x, 0))
         self.speed = speed
         self.add(group)

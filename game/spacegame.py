@@ -9,7 +9,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((screen_width, screen_heidth))
 
-icon = pygame.image.load('res/icon.png')
+icon = pygame.image.load('assets/icon.png')
 pygame.display.set_icon(icon)
 pygame.display.set_caption('Space Game')
 

@@ -11,7 +11,7 @@ class Starship(Sprite):
         self.x = x
         self.y = y
         self.vel = V2()
-        image = pygame.image.load('res/icon.png')
+        image = pygame.image.load('assets/icon.png')
         self.image = pygame.transform.scale(image, (image.get_width() // 4, image.get_height() // 4)).convert_alpha()
         self.rect = self.image.get_rect(center=(self.x, self.y))
         self.health = 100
