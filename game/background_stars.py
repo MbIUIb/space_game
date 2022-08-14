@@ -13,8 +13,8 @@ class Star(Sprite):
         self.speed = speed
         self.add(group)
 
-    def update(self, *args):
-        if self.rect.y < args[0]:
+    def update(self, *coords):
+        if self.rect.y < coords[0]:
             self.rect.y += self.speed
         else:
             self.kill()
