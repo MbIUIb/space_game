@@ -5,8 +5,14 @@ SPACE = (3, 4, 49)
 # STAR_lvl3 = (109, 102, 114)
 
 # screen
+icon = 'icon.png'
+game_name = 'Space Game'
 screen_width = 800
 screen_heidth = 800
+
+# initial mouse control settings
+mouse_control = False
+mouse_visible = False
 
 FPS = 60
 
