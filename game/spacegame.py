@@ -34,7 +34,7 @@ while running_game:
         elif event.type == FLYING_STAR:
             create_stars(stars)
 
-    if mouse_control:
+    if mouse_control and not keys[pygame.K_LALT]:
         mouse_pos = pygame.mouse.get_pos()
         hero.follow_mouse(mouse_pos)
     else:
