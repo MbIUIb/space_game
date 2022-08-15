@@ -19,6 +19,7 @@ class StarShip(Sprite):
         self.speed4mouse = None
 
         # bullet specification
+        self.bullet_pos = 45
         self.bullet_speed = None
         self.bullet_damage = None
         self.fire_pace = 0.15
@@ -62,7 +63,7 @@ class StarShip(Sprite):
         fire_time = time()
         if fire_time - self.fire_flag > self.fire_pace:
             self.fire_flag = fire_time
-            return Bullet(self.rect.centerx, self.rect.centery-45, group, self.bullet_damage, self.bullet_speed)
+            return Bullet(self.rect.centerx, self.rect.centery+self.bullet_pos, group, self.bullet_damage, self.bullet_speed)
 
 
 class HeroStarShip(StarShip):
@@ -70,6 +71,7 @@ class HeroStarShip(StarShip):
         super().__init__(x, y, image, group)
         self.speed4mouse = 12
 
+        self.bullet_pos = -45
         self.bullet_speed = 15
         self.bullet_damage = 10
 
@@ -90,9 +92,3 @@ class EnemyStarShip(StarShip):
         if self.rect.centerx > 750:
             x_direction = -1
         self.rect.centerx += self.speed * x_direction
-
-    def shoot(self, group):
-        fire_time = time()
-        if fire_time - self.fire_flag > self.fire_pace:
-            self.fire_flag = fire_time
-            return Bullet(self.rect.centerx, self.rect.centery+45, group, self.bullet_damage, self.bullet_speed)
