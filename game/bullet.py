@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
-from config import screen_width, screen_heidth
+from config import screen_width, screen_heigth
 from tools import load_image
 
 
@@ -17,7 +17,7 @@ class Bullet(Sprite):
         self.add(group)
 
     def update(self, updirection=1):
-        if 0 < self.rect.y < screen_heidth:
-            self.rect.y += self.speed * updirection
+        if 0 < self.rect.centery < screen_heigth:
+            self.rect.centery += self.speed * updirection
         else:
             self.kill()
