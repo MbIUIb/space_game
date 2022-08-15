@@ -1,3 +1,4 @@
+import pygame
 # colors
 SPACE = (3, 4, 49)
 # STAR_lvl1 = (253, 249, 255)
@@ -8,11 +9,18 @@ SPACE = (3, 4, 49)
 icon = 'icon.png'
 game_name = 'Space Game'
 screen_width = 800
-screen_heidth = 800
+screen_heigth = 800
 
 # initial mouse control settings
 mouse_control = False
 mouse_visible = False
+
+# sprite groups
+stars = pygame.sprite.Group()
+heroes = pygame.sprite.Group()
+hero_bullets = pygame.sprite.Group()
+enemies = pygame.sprite.Group()
+enemy_bullets = pygame.sprite.Group()
 
 FPS = 60
 
