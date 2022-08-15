@@ -49,7 +49,7 @@ class StarShip(Sprite):
 
     def follow_mouse(self, mouse_pos):
         """experimental function"""
-        self.vel.update(mouse_pos[0] - self.x, mouse_pos[1] - self.y)
+        self.vel.update(mouse_pos[0] - self.rect.centerx, mouse_pos[1] - self.rect.centery)
 
         if self.vel.length():
             self.vel.scale_to_length(self.speed4mouse)
