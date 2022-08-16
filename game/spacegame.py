@@ -20,7 +20,7 @@ FLYING_STAR = pygame.event.custom_type()
 pygame.time.set_timer(FLYING_STAR, 70)
 
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90, heroes)
-enemy = EnemyStarShip(screen_width // 2, 100, 'enemy.png', -90, enemies)
+EnemyStarShip(screen_width // 2, 100, 'enemy.png', -90, enemies)
 
 pygame.mouse.set_visible(mouse_visible)
 
@@ -51,16 +51,15 @@ while running_game:
             hero.shoot()
 
     stars.update(screen_heigth)
-    hero.bullets.update()
-    enemy.bullets.update()
+    hero_bullets.update()
+    enemy_bullets.update()
     heroes.update()
     enemies.update()
-    enemy.shoot()
 
     screen.fill(SPACE)
     stars.draw(screen)
-    hero.bullets.draw(screen)
-    enemy.bullets.draw(screen)
+    hero_bullets.draw(screen)
+    enemy_bullets.draw(screen)
     enemies.draw(screen)
     heroes.draw(screen)
 
