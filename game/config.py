@@ -18,7 +18,9 @@ mouse_visible = False
 # sprite groups
 stars = pygame.sprite.Group()
 heroes = pygame.sprite.Group()
+hero_bullets = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
+enemy_bullets = pygame.sprite.Group()
 
 FPS = 60
 
