@@ -22,10 +22,9 @@ class StarShip(Sprite):
         # bullet specification
         self.bullets = pygame.sprite.Group()
         self.bullet_pos_x = 0
-        self.bullet_pos_y = 45
-        self.bullet_speed = V2(15, 0)
-        self.bullet_speed.rotate_ip(-angle)
-        self.bullet_damage = None
+        self.bullet_pos_y = 35
+        self.bullet_speed = V2(0, -15)
+        self.bullet_damage = 5
         self.fire_pace = 0.15
         self.fire_flag = 0
 
@@ -94,8 +93,9 @@ class HeroStarShip(StarShip):
     def __init__(self, x, y, image, angle, group):
         super().__init__(x, y, image, angle, group)
 
-        self.bullet_pos_y = -45
-        self.bullet_speed.scale_to_length(15)
+        self.bullets = hero_bullets
+        self.bullet_pos_y = -35
+        # self.bullet_speed.scale_to_length(15)
         self.bullet_damage = 10
 
     def update(self):
@@ -108,8 +108,8 @@ class EnemyStarShip(StarShip):
         super().__init__(x, y, image, angle, group)
         self.speed = 3
 
-        self.bullet_speed.scale_to_length(7)
-        self.bullet_damage = 5
+        self.bullets = enemy_bullets
+        self.bullet_speed = V2(0, 7)
         self.fire_pace = 1
 
     def update(self):
