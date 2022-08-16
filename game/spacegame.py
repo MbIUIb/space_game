@@ -28,7 +28,6 @@ running_game = True
 
 while running_game:
     keys = pygame.key.get_pressed()
-    print(keys)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running_game = False
@@ -40,16 +39,16 @@ while running_game:
         hero.follow_mouse(mouse_pos)
     else:
         # it is necessary to process 'if'-s in separate constructions
-        if keys[pygame.K_LEFT] or keys[pygame.K_a] or keys[1092]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             hero.left_movement()
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d] or keys[1074]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             hero.right_movement()
-        if keys[pygame.K_UP] or keys[pygame.K_w]or keys[1094]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
             hero.up_movement()
-        if keys[pygame.K_DOWN] or keys[pygame.K_s] or keys[1099]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             hero.down_movement()
         if keys[pygame.K_SPACE]:
-            hero.shoot(hero_bullets)
+            hero.shoot()
 
     # firstly drawing
     screen.fill(SPACE)
@@ -59,11 +58,11 @@ while running_game:
     stars.draw(screen)
     stars.update(screen_heigth)
 
-    hero_bullets.draw(screen)
-    hero_bullets.update(-1)
+    hero.bullets.draw(screen)
+    hero.bullets.update()
 
-    enemy_bullets.draw(screen)
-    enemy_bullets.update()
+    enemy.bullets.draw(screen)
+    enemy.bullets.update()
 
 
     # third drawing
@@ -72,7 +71,7 @@ while running_game:
 
     enemies.draw(screen)
     enemies.update()
-    enemy.shoot(enemy_bullets)
+    enemy.shoot()
 
 
     pygame.display.update()

@@ -19,6 +19,7 @@ class StarShip(Sprite):
         self.speed4mouse = 12
 
         # bullet specification
+        self.bullets = pygame.sprite.Group()
         self.bullet_pos_x = 0
         self.bullet_pos_y = 45
         self.bullet_speed = None
@@ -60,11 +61,11 @@ class StarShip(Sprite):
         if abs(self.rect.centery - mouse_pos[1]) >= self.speed // 2:
             self.rect.centery += self.vel.y
 
-    def shoot(self, group):
+    def shoot(self):
         fire_time = time()
         if fire_time - self.fire_flag > self.fire_pace:
             self.fire_flag = fire_time
-            return Bullet(self.rect.centerx+self.bullet_pos_x, self.rect.centery+self.bullet_pos_y, group, self.bullet_damage, self.bullet_speed)
+            return Bullet(self.rect.centerx+self.bullet_pos_x, self.rect.centery+self.bullet_pos_y, self.bullets, self.bullet_damage, self.bullet_speed)
 
 
 class HeroStarShip(StarShip):
