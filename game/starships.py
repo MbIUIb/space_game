@@ -79,11 +79,13 @@ class StarShip(Sprite):
     def collide_bullets(self, group, hero=False):
         for bullet in group:
             if pygame.sprite.collide_mask(self, bullet):
-                self.detonation()
+                if self.health > 0:
+                    self.health -= bullet.damage
+                else:
+                    self.detonation()
+                    if hero:
+                        pass
                 bullet.kill()
-
-                if hero:
-                    pass
 
     def __del__(self):
         print("starship del")
