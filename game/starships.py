@@ -4,15 +4,15 @@ from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
 from config import screen_width, screen_heigth
-from tools import load_image, unscale_image
+from tools import load_image, unscale_image, rot_center
 from bullet import Bullet
 
 
 class StarShip(Sprite):
-    def __init__(self, x, y, image, group):
+    def __init__(self, x, y, image, angle, group):
         super().__init__()
         self.vel = V2()
-        self.image = load_image(image)
+        self.image = rot_center(load_image(image), angle)
         self.rect = self.image.get_rect(center=(x, y))
         self.health = 100
         self.speed = 7
@@ -22,7 +22,8 @@ class StarShip(Sprite):
         self.bullets = pygame.sprite.Group()
         self.bullet_pos_x = 0
         self.bullet_pos_y = 45
-        self.bullet_speed = None
+        self.bullet_speed = V2(15, 0)
+        self.bullet_speed.rotate_ip(-angle)
         self.bullet_damage = None
         self.fire_pace = 0.15
         self.fire_flag = 0
@@ -65,25 +66,31 @@ class StarShip(Sprite):
         fire_time = time()
         if fire_time - self.fire_flag > self.fire_pace:
             self.fire_flag = fire_time
-            return Bullet(self.rect.centerx+self.bullet_pos_x, self.rect.centery+self.bullet_pos_y, self.bullets, self.bullet_damage, self.bullet_speed)
+            return Bullet(
+                self.rect.centerx + self.bullet_pos_x,
+                self.rect.centery + self.bullet_pos_y,
+                self.bullets,
+                self.bullet_speed,
+                self.bullet_damage,
+            )
 
 
 class HeroStarShip(StarShip):
-    def __init__(self, x, y, image, group):
-        super().__init__(x, y, image, group)
+    def __init__(self, x, y, image, angle, group):
+        super().__init__(x, y, image, angle, group)
 
         self.bullet_pos_y = -45
-        self.bullet_speed = 15
+        self.bullet_speed.scale_to_length(15)
         self.bullet_damage = 10
 
 
 x_direction = 1
 class EnemyStarShip(StarShip):
-    def __init__(self, x, y, image, group):
-        super().__init__(x, y, image, group)
+    def __init__(self, x, y, image, angle, group):
+        super().__init__(x, y, image, angle, group)
         self.speed = 3
 
-        self.bullet_speed = 7
+        self.bullet_speed.scale_to_length(7)
         self.bullet_damage = 5
         self.fire_pace = 1
 

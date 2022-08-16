@@ -19,8 +19,8 @@ clock = pygame.time.Clock()
 FLYING_STAR = pygame.event.custom_type()
 pygame.time.set_timer(FLYING_STAR, 70)
 
-hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', heroes)
-enemy = EnemyStarShip(screen_width // 2, 100, 'enemy.png', enemies)
+hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90, heroes)
+enemy = EnemyStarShip(screen_width // 2, 100, 'enemy.png', -90, enemies)
 
 pygame.mouse.set_visible(mouse_visible)
 
