@@ -39,13 +39,13 @@ while running_game:
         hero.follow_mouse(mouse_pos)
     else:
         # it is necessary to process 'if'-s in separate constructions
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a] or keys[1092]:
             hero.left_movement()
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d] or keys[1074]:
             hero.right_movement()
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
+        if keys[pygame.K_UP] or keys[pygame.K_w] or keys[1094]:
             hero.up_movement()
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s] or keys[1099]:
             hero.down_movement()
         if keys[pygame.K_SPACE]:
             hero.shoot()
