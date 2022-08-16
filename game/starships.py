@@ -3,7 +3,7 @@ import pygame
 from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
-from config import screen_width, screen_heigth
+from config import screen_width, screen_heigth, hero_bullets, enemy_bullets
 from tools import load_image, unscale_image, rot_center
 from bullet import Bullet
 
@@ -17,6 +17,7 @@ class StarShip(Sprite):
         self.health = 100
         self.speed = 7
         self.speed4mouse = 12
+        self.killed = False
 
         # bullet specification
         self.bullets = pygame.sprite.Group()
@@ -66,13 +67,27 @@ class StarShip(Sprite):
         fire_time = time()
         if fire_time - self.fire_flag > self.fire_pace:
             self.fire_flag = fire_time
-            return Bullet(
-                self.rect.centerx + self.bullet_pos_x,
-                self.rect.centery + self.bullet_pos_y,
-                self.bullets,
-                self.bullet_speed,
-                self.bullet_damage,
-            )
+            return Bullet(self.rect.centerx + self.bullet_pos_x,
+                          self.rect.centery + self.bullet_pos_y,
+                          self.bullets,
+                          self.bullet_speed,
+                          self.bullet_damage)
+
+    def detonation(self):
+        self.kill()
+        self.killed = True
+
+    def collide_bullets(self, group, hero=False):
+        for bullet in group:
+            if pygame.sprite.collide_mask(self, bullet):
+                self.detonation()
+                bullet.kill()
+
+                if hero:
+                    pass
+
+    def __del__(self):
+        print("starship del")
 
 
 class HeroStarShip(StarShip):
@@ -82,6 +97,9 @@ class HeroStarShip(StarShip):
         self.bullet_pos_y = -45
         self.bullet_speed.scale_to_length(15)
         self.bullet_damage = 10
+
+    def update(self):
+        self.collide_bullets(enemy_bullets, True)
 
 
 x_direction = 1
@@ -101,3 +119,5 @@ class EnemyStarShip(StarShip):
         if self.rect.centerx > 750:
             x_direction = -1
         self.rect.centerx += self.speed * x_direction
+        self.shoot()
+        self.collide_bullets(hero_bullets)
