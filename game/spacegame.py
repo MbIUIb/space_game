@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 
 from config import *
-from starships import HeroStarShip, EnemyStarShip
+from starships import HeroStarShip, EnemyStarShip, create_enemy
 from background_stars import create_stars
 from tools import load_image
 
@@ -28,7 +28,6 @@ FLYING_STAR = pygame.event.custom_type()
 pygame.time.set_timer(FLYING_STAR, 70)
 
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90, heroes)
-EnemyStarShip(screen_width // 2, 100, 'enemy.png', -90, enemies)
 
 pygame.mouse.set_visible(mouse_visible)
 
@@ -65,7 +64,10 @@ while running_game:
                 if keys[pygame.K_SPACE]:
                     hero.shoot()
 
-            screen.fill(SPACE)
+            if len(enemies) < 3:
+                create_enemy()
+
+            screen.fill(SPACE) # before starships draw
             stars.update(screen_heigth)
             hero_bullets.update()
             enemy_bullets.update()

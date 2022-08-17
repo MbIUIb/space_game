@@ -1,9 +1,10 @@
 from time import time
+from random import randint
 import pygame
 from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
-from config import OUTLINE, HP, screen_width, screen_heigth, screen, hero_bullets, enemy_bullets
+from config import OUTLINE, HP, screen_width, screen_heigth, screen, hero_bullets, enemy_bullets, enemies
 from tools import load_image, unscale_image, rot_center
 from bullet import Bullet
 from health import Health
@@ -117,7 +118,6 @@ class HeroStarShip(StarShip):
 
 
 
-x_direction = 1
 class EnemyStarShip(StarShip):
     def __init__(self, x, y, image, angle, group):
         super().__init__(x, y, image, angle, group)
@@ -130,15 +130,23 @@ class EnemyStarShip(StarShip):
 
         self.hpbar = Health(self.health)
 
+        self.x_direction = 1
+
     def update(self):
-        global x_direction
         if self.rect.centerx < 50:
-            x_direction = 1
+            self.x_direction = 1
         if self.rect.centerx > 750:
-            x_direction = -1
-        self.rect.centerx += self.speed * x_direction
+            self.x_direction = -1
+        self.rect.centerx += self.speed * self.x_direction
 
         self.shoot()
         self.collide_bullets(hero_bullets)
 
         self.hpbar.update(self.rect.centerx, self.rect.centery-45, self.health)
+
+
+def create_enemy():
+    x = randint(30, 770)
+    y = randint(30, screen_heigth//2)
+
+    return EnemyStarShip(x, y, 'enemy.png', -90, enemies)
