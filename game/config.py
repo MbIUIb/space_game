@@ -1,6 +1,8 @@
 import pygame
 # colors
 SPACE = (3, 4, 49)
+OUTLINE = (250, 65, 65)
+HP = (0, 255, 108)
 # STAR_lvl1 = (253, 249, 255)
 # STAR_lvl2 = (198, 198, 206)
 # STAR_lvl3 = (109, 102, 114)
@@ -10,6 +12,7 @@ icon = 'icon.png'
 game_name = 'Space Game'
 screen_width = 800
 screen_heigth = 800
+screen = pygame.display.set_mode((screen_width, screen_heigth))
 
 # initial mouse control settings
 mouse_control = False
