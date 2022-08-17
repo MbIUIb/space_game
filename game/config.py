@@ -1,4 +1,6 @@
-import pygame
+import pygame as pg
+
+
 # colors
 SPACE = (3, 4, 49)
 # STAR_lvl1 = (253, 249, 255)
@@ -16,11 +18,11 @@ mouse_control = False
 mouse_visible = False
 
 # sprite groups
-stars = pygame.sprite.Group()
-heroes = pygame.sprite.Group()
-hero_bullets = pygame.sprite.Group()
-enemies = pygame.sprite.Group()
-enemy_bullets = pygame.sprite.Group()
+stars = pg.sprite.Group()
+heroes = pg.sprite.Group()
+hero_bullets = pg.sprite.Group()
+enemies = pg.sprite.Group()
+enemy_bullets = pg.sprite.Group()
 
 FPS = 60
 
