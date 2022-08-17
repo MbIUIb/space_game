@@ -65,13 +65,13 @@ while running_game:
                 if keys[pygame.K_SPACE]:
                     hero.shoot()
 
+            screen.fill(SPACE)
             stars.update(screen_heigth)
             hero_bullets.update()
             enemy_bullets.update()
             heroes.update()
             enemies.update()
 
-            screen.fill(SPACE)
             stars.draw(screen)
             hero_bullets.draw(screen)
             enemy_bullets.draw(screen)
