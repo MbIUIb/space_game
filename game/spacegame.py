@@ -11,6 +11,7 @@ from tools import load_image
 class State(Enum):
     menu = 'menu'
     play = 'play'
+    
 
 pygame.init()
 
