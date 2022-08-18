@@ -131,18 +131,27 @@ class EnemyStarShip(StarShip):
         self.hpbar = Health(self.health)
 
         self.x_direction = 1
+        self.y_direction = 1
 
     def update(self):
-        if self.rect.centerx < 50:
-            self.x_direction = 1
-        if self.rect.centerx > 750:
-            self.x_direction = -1
-        self.rect.centerx += self.speed * self.x_direction
+        self.enemy_movement()
 
         self.shoot()
         self.collide_bullets(hero_bullets)
 
         self.hpbar.update(self.rect.centerx, self.rect.centery-45, self.health)
+
+    def enemy_movement(self, type=0):
+        match type:
+            case 0:
+                if self.rect.centerx < 50:
+                    self.x_direction = 1
+                if self.rect.centerx > 750:
+                    self.x_direction = -1
+                self.rect.centerx += self.speed * self.x_direction
+            case 1:
+                # new type
+                pass
 
 
 def create_enemy():
