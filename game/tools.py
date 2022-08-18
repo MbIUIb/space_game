@@ -1,3 +1,4 @@
+import pygame as pg
 from pygame.image import load
 from pygame import transform
 

@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import pygame as pg
 
 
@@ -6,14 +8,18 @@ SPACE = (3, 4, 49)
 OUTLINE = (250, 65, 65)
 HP = (0, 255, 108)
 SCORE = (206, 137, 255)
+MENU_NONACTIVE = (55, 33, 52)
+MENU_ACTIVE = (71, 68, 118)
 # STAR_lvl1 = (253, 249, 255)
 # STAR_lvl2 = (198, 198, 206)
 # STAR_lvl3 = (109, 102, 114)
 
-# fonts
-arkhip = 'assets/fonts/Arkhip.ttf'
-impact = 'assets/fonts/Impact.ttf'
-wiguru = 'assets/fonts/WiGuru.ttf'
+@dataclass
+class FontNames:
+    broken_console = 'assets/fonts/Broken Console Regular.ttf'
+    arkhip = 'assets/fonts/Arkhip.ttf'
+    impact = 'assets/fonts/Impact.ttf'
+    wiguru = 'assets/fonts/WiGuru.ttf'
 
 # screen
 icon = 'icon.png'
