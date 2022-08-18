@@ -143,7 +143,7 @@ class EnemyStarShip(StarShip):
 
     def enemy_movement(self, type=0):
         match type:
-            case 0:
+            case 0: # simple left-right movement
                 if self.rect.centerx < 50:
                     self.x_direction = 1
                 if self.rect.centerx > 750:
