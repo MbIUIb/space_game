@@ -14,7 +14,7 @@ icon = 'icon.png'
 game_name = 'Space Game'
 screen_width = 800
 screen_heigth = 800
-screen = pygame.display.set_mode((screen_width, screen_heigth))
+screen = pg.display.set_mode((screen_width, screen_heigth))
 
 # initial mouse control settings
 mouse_control = False
