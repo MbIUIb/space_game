@@ -1,71 +1,83 @@
 from enum import Enum
 
-import pygame
+import pygame as pg
 
 from config import *
 from starships import HeroStarShip, EnemyStarShip, create_enemy
 from background_stars import create_stars
 from tools import load_image
+from score import Score
+from menu import Menu
 
 
 class State(Enum):
     menu = 'menu'
     play = 'play'
+    exit = 'exit'
     
 
-pygame.init()
+pg.init()
 
-screen = pygame.display.set_mode((screen_width, screen_heigth))
+screen = pg.display.set_mode((screen_width, screen_heigth))
 
 icon = load_image(icon)
-pygame.display.set_icon(icon)
-pygame.display.set_caption(game_name)
+pg.display.set_icon(icon)
+pg.display.set_caption(game_name)
 
-clock = pygame.time.Clock()
+clock = pg.time.Clock()
 
 # user events
-FLYING_STAR = pygame.event.custom_type()
-pygame.time.set_timer(FLYING_STAR, 70)
+FLYING_STAR = pg.event.custom_type()
+pg.time.set_timer(FLYING_STAR, 70)
 
-hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90, heroes)
+score = Score(FontNames.arkhip)
+hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90,
+                    heroes, score)
 
-pygame.mouse.set_visible(mouse_visible)
+pg.mouse.set_visible(mouse_visible)
 
 running_game = True
-state = State.play
+state = State.menu
+menu = Menu(FontNames.broken_console, state, screen)
 
 while running_game:
-    keys = pygame.key.get_pressed()
+    keys = pg.key.get_pressed()
 
     match state:
         case state.menu:
-            pass
+            menu.update(keys)
+            state = menu.game_state
+
+            menu.draw()
 
         case state.play:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+            if keys[pg.K_ESCAPE]:
+                state = state.menu
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
                     running_game = False
                 elif event.type == FLYING_STAR:
                     create_stars(stars)
 
-            if mouse_control and not keys[pygame.K_LALT]:
-                mouse_pos = pygame.mouse.get_pos()
+            if mouse_control and not keys[pg.K_LALT]:
+                mouse_pos = pg.mouse.get_pos()
                 hero.follow_mouse(mouse_pos)
             else:
                 # it is necessary to process 'if'-s in separate constructions
-                if keys[pygame.K_LEFT] or keys[pygame.K_a] or keys[1092]:
+                if keys[pg.K_LEFT] or keys[pg.K_a] or keys[1092]:
                     hero.left_movement()
-                if keys[pygame.K_RIGHT] or keys[pygame.K_d] or keys[1074]:
+                if keys[pg.K_RIGHT] or keys[pg.K_d] or keys[1074]:
                     hero.right_movement()
-                if keys[pygame.K_UP] or keys[pygame.K_w] or keys[1094]:
+                if keys[pg.K_UP] or keys[pg.K_w] or keys[1094]:
                     hero.up_movement()
-                if keys[pygame.K_DOWN] or keys[pygame.K_s] or keys[1099]:
+                if keys[pg.K_DOWN] or keys[pg.K_s] or keys[1099]:
                     hero.down_movement()
-                if keys[pygame.K_SPACE]:
+                if keys[pg.K_SPACE]:
                     hero.shoot()
 
             if len(enemies) < 3:
-                create_enemy()
+                create_enemy(score)
 
             screen.fill(SPACE) # before starships draw
             stars.update(screen_heigth)
@@ -79,8 +91,12 @@ while running_game:
             enemy_bullets.draw(screen)
             enemies.draw(screen)
             heroes.draw(screen)
+            score.draw()
 
-    pygame.display.update()
+        case state.exit:
+            running_game = False
+
+    pg.display.update()
     clock.tick(FPS)
 
-pygame.quit()
+pg.quit()

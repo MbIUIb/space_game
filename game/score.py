@@ -1,17 +1,21 @@
-import pygame
-from config import SCORE, arkhip, screen
-pygame.init()
+import pygame as pg
+
+from config import SCORE, FontNames, screen
 
 
 class Score:
-    def __init__(self):
+    def __init__(self, fontname: str, fontsize: int = 30):
         self.score = 0
-        self.font = pygame.font.Font(arkhip, 30)
+        self.font = pg.font.Font(fontname, fontsize)
+        self._score_surf: pg.Surface = None
+        self._score_rect: pg.Rect = None
 
-    def addition(self, score):
+    def __add__(self, score):
         self.score += score
 
     def update(self):
-        score_txt = self.font.render(f'score: {self.score}', 1, SCORE)
-        pos = score_txt.get_rect(topleft=(0, 0))
-        screen.blit(score_txt, pos)
+        self._score_surf = self.font.render(f'score: {self.score}', 1, SCORE)
+        self._score_rect = self._score_surf.get_rect(topleft=(0, 0))
+
+    def draw(self):
+        screen.blit(self._score_surf, self._score_rect)
