@@ -1,33 +1,32 @@
 from time import time
 from random import randint
-import pygame
-from pygame.sprite import Sprite
-from pygame.math import Vector2 as V2
 
-from config import OUTLINE, HP, screen_width, screen_heigth, screen, hero_bullets, enemy_bullets, enemies
-from tools import load_image, unscale_image, rot_center
+import pygame as pg
+
+from config import screen_width, screen_heigth, hero_bullets, enemy_bullets, enemies
+from tools import load_image, rot_center
 from bullet import Bullet
 from health import Health
 from score import Score
 
 
-class StarShip(Sprite):
-    scorebar = Score()
-    def __init__(self, x, y, image, angle, group):
+class StarShip(pg.sprite.Sprite):
+    def __init__(self, x, y, image, angle, group, score: Score):
         super().__init__()
-        self.vel = V2()
+        self.vel = pg.Vector2()
         self.image = rot_center(load_image(image), angle)
         self.rect = self.image.get_rect(center=(x, y))
         self.health = 100
         self.speed = 7
         self.speed4mouse = 12
-        self.score = 0
+        self.score = score
+        self.score_points = 0
 
         # bullet specification
-        self.bullets = pygame.sprite.Group()
+        self.bullets = pg.sprite.Group()
         self.bullet_pos_x = 0
         self.bullet_pos_y = 35
-        self.bullet_speed = V2(0, -15)
+        self.bullet_speed = pg.Vector2(0, -15)
         self.bullet_damage = 5
         self.fire_pace = 0.15
         self.fire_flag = 0
@@ -78,7 +77,7 @@ class StarShip(Sprite):
 
     def destruction(self):
         if self.health <= 0:
-            self.scorebar.addition(self.score)
+            self.score += self.score_points
             self.detonation()
         else:
             # destruction animation
@@ -90,7 +89,7 @@ class StarShip(Sprite):
 
     def collide_bullets(self, group):
         for bullet in group:
-            if pygame.sprite.collide_mask(self, bullet):
+            if pg.sprite.collide_mask(self, bullet):
                 if self.health > 0:
                     self.health -= bullet.damage
                     self.destruction()
@@ -101,8 +100,8 @@ class StarShip(Sprite):
 
 
 class HeroStarShip(StarShip):
-    def __init__(self, x, y, image, angle, group):
-        super().__init__(x, y, image, angle, group)
+    def __init__(self, x, y, image, angle, group, score: Score):
+        super().__init__(x, y, image, angle, group, score)
 
         self.bullets = hero_bullets
         self.bullet_pos_y = -35
@@ -113,19 +112,19 @@ class HeroStarShip(StarShip):
 
     def update(self):
         self.collide_bullets(enemy_bullets)
-        self.hpbar.update(660, self.hpbar.bar_height, self.health)
-        self.scorebar.update()
+        self.hpbar.update(660, self.hpbar.h, self.health)
+        self.score.update()
 
 
 
 class EnemyStarShip(StarShip):
-    def __init__(self, x, y, image, angle, group):
-        super().__init__(x, y, image, angle, group)
+    def __init__(self, x, y, image, angle, group, score: Score):
+        super().__init__(x, y, image, angle, group, score)
         self.speed = 3
-        self.score = 100
+        self.score_points = 100
 
         self.bullets = enemy_bullets
-        self.bullet_speed = V2(0, 7)
+        self.bullet_speed = pg.Vector2(0, 7)
         self.fire_pace = 1
 
         self.hpbar = Health(self.health)
@@ -154,8 +153,8 @@ class EnemyStarShip(StarShip):
                 pass
 
 
-def create_enemy():
+def create_enemy(score: Score):
     x = randint(30, 770)
     y = randint(30, screen_heigth//2)
 
-    return EnemyStarShip(x, y, 'enemy.png', -90, enemies)
+    return EnemyStarShip(x, y, 'enemy.png', -90, enemies, score)
