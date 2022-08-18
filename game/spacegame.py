@@ -6,11 +6,13 @@ from config import *
 from starships import HeroStarShip, EnemyStarShip, create_enemy
 from background_stars import create_stars
 from tools import load_image
+from menu import Menu
 
 
 class State(Enum):
     menu = 'menu'
     play = 'play'
+    exit = 'exit'
     
 
 pygame.init()
@@ -32,16 +34,23 @@ hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90, hero
 pygame.mouse.set_visible(mouse_visible)
 
 running_game = True
-state = State.play
+state = State.menu
+menu = Menu(FontNames.broken_console, state, screen)
 
 while running_game:
     keys = pygame.key.get_pressed()
 
     match state:
         case state.menu:
-            pass
+            menu.update(keys)
+            state = menu.game_state
+
+            menu.draw()
 
         case state.play:
+            if keys[pygame.K_ESCAPE]:
+                state = state.menu
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running_game = False
@@ -79,6 +88,9 @@ while running_game:
             enemy_bullets.draw(screen)
             enemies.draw(screen)
             heroes.draw(screen)
+
+        case state.exit:
+            running_game = False
 
     pygame.display.update()
     clock.tick(FPS)

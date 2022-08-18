@@ -1,12 +1,12 @@
-import pygame
-from config import SCORE, arkhip, screen
-pygame.init()
+import pygame as pg
+from config import SCORE, FontNames, screen
+pg.init()
 
 
 class Score:
     def __init__(self):
         self.score = 0
-        self.font = pygame.font.Font(arkhip, 30)
+        self.font = pg.font.Font(FontNames.arkhip, 30)
 
     def addition(self, score):
         self.score += score
