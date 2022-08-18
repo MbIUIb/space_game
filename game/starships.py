@@ -1,14 +1,18 @@
 from time import time
+from random import randint
 import pygame
 from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
-from config import OUTLINE, HP, screen_width, screen_heigth, screen, hero_bullets, enemy_bullets
+from config import OUTLINE, HP, screen_width, screen_heigth, screen, hero_bullets, enemy_bullets, enemies
 from tools import load_image, unscale_image, rot_center
 from bullet import Bullet
+from health import Health
+from score import Score
 
 
 class StarShip(Sprite):
+    scorebar = Score()
     def __init__(self, x, y, image, angle, group):
         super().__init__()
         self.vel = V2()
@@ -17,6 +21,7 @@ class StarShip(Sprite):
         self.health = 100
         self.speed = 7
         self.speed4mouse = 12
+        self.score = 0
 
         # bullet specification
         self.bullets = pygame.sprite.Group()
@@ -73,6 +78,7 @@ class StarShip(Sprite):
 
     def destruction(self):
         if self.health <= 0:
+            self.scorebar.addition(self.score)
             self.detonation()
         else:
             # destruction animation
@@ -108,13 +114,15 @@ class HeroStarShip(StarShip):
     def update(self):
         self.collide_bullets(enemy_bullets)
         self.hpbar.update(660, self.hpbar.bar_height, self.health)
+        self.scorebar.update()
 
 
-x_direction = 1
+
 class EnemyStarShip(StarShip):
     def __init__(self, x, y, image, angle, group):
         super().__init__(x, y, image, angle, group)
         self.speed = 3
+        self.score = 100
 
         self.bullets = enemy_bullets
         self.bullet_speed = V2(0, 7)
@@ -122,13 +130,14 @@ class EnemyStarShip(StarShip):
 
         self.hpbar = Health(self.health)
 
+        self.x_direction = 1
+
     def update(self):
-        global x_direction
         if self.rect.centerx < 50:
-            x_direction = 1
+            self.x_direction = 1
         if self.rect.centerx > 750:
-            x_direction = -1
-        self.rect.centerx += self.speed * x_direction
+            self.x_direction = -1
+        self.rect.centerx += self.speed * self.x_direction
 
         self.shoot()
         self.collide_bullets(hero_bullets)
@@ -136,20 +145,8 @@ class EnemyStarShip(StarShip):
         self.hpbar.update(self.rect.centerx, self.rect.centery-45, self.health)
 
 
-class Health:
-    def __init__(self, full_health, bar_width=50, bar_heigth=5):
-        self.bar_width = bar_width
-        self.bar_height = bar_heigth
-        self.full_health = full_health
-        self.surface = pygame.Surface((bar_width, bar_heigth))
+def create_enemy():
+    x = randint(30, 770)
+    y = randint(30, screen_heigth//2)
 
-    def update(self, x, y, curr_health):
-        if curr_health < 0:
-            curr_health = 0
-
-        fill = curr_health/100 * self.bar_width
-        fill_rect = pygame.Rect(0, 0, fill, self.bar_height)
-
-        self.surface.fill(OUTLINE)
-        pygame.draw.rect(self.surface, HP, fill_rect)
-        screen.blit(self.surface, (x-self.bar_width//2, y-self.bar_height//2))
+    return EnemyStarShip(x, y, 'enemy.png', -90, enemies)
