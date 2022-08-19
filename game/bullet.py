@@ -2,14 +2,14 @@ import pygame
 from pygame.sprite import Sprite
 from pygame.math import Vector2 as V2
 
-from config import screen_width, screen_heigth, heroes, enemies
-from tools import load_image
+from config import screen_width, screen_heigth, ImageNames, heroes, enemies
+from tools import Image
 
 
 class Bullet(Sprite):
     def __init__(self, x, y, group, speed: V2, damage=10):
         super().__init__()
-        self.image = load_image('bullet3x10.png')
+        self.image = Image(ImageNames.bullet3x10).surf
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = speed
         self.damage = damage
