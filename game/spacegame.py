@@ -5,7 +5,7 @@ import pygame as pg
 from config import *
 from starships import HeroStarShip, create_enemy
 from background_stars import create_stars
-from tools import load_image
+from tools import Image
 from score import Score
 from menu import Menu, Pause
 
@@ -14,7 +14,7 @@ pg.init()
 
 screen = pg.display.set_mode((screen_width, screen_heigth))
 
-icon = load_image(icon)
+icon = Image(ImageNames.icon).surf
 pg.display.set_icon(icon)
 pg.display.set_caption(game_name)
 
@@ -25,7 +25,7 @@ FLYING_STAR = pg.event.custom_type()
 pg.time.set_timer(FLYING_STAR, 70)
 
 score = Score(FontNames.arkhip)
-hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90,
+hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.icon, 90,
                     heroes, score)
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 

@@ -12,6 +12,13 @@ class FontNames:
     wiguru = 'assets/fonts/WiGuru.ttf'
 
 
+@dataclass
+class ImageNames:
+    icon = 'assets/images/icon.png'
+    enemy = 'assets/images/enemy.png'
+    bullet3x10 = 'assets/images/bullet3x10.png'
+
+
 class GameState(Enum):
     menu = 'menu'
     play = 'play'
@@ -47,7 +54,7 @@ MENU_ACTIVE = (71, 68, 118)
 
 # SCREEN
 
-icon = 'icon.png'
+icon = 'assets/images/icon.png'
 game_name = 'Space Game'
 screen_width = 800
 screen_heigth = 800
@@ -75,7 +82,7 @@ hero_bullets = pg.sprite.Group()
 enemies = EnemiesGroup()
 enemy_bullets = pg.sprite.Group()
 
-
-star_config = {'star_lvl1': 4,
-               'star_lvl2': 3,
-               'star_lvl3': 2}
+                
+star_config = {'assets/images/star_lvl1': 4,
+               'assets/images/star_lvl2': 3,
+               'assets/images/star_lvl3': 2}
