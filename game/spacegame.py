@@ -3,18 +3,12 @@ from enum import Enum
 import pygame as pg
 
 from config import *
-from starships import HeroStarShip, EnemyStarShip, create_enemy
+from starships import HeroStarShip, create_enemy
 from background_stars import create_stars
 from tools import load_image
 from score import Score
 from menu import Menu
 
-
-class State(Enum):
-    menu = 'menu'
-    play = 'play'
-    exit = 'exit'
-    
 
 pg.init()
 
@@ -33,11 +27,12 @@ pg.time.set_timer(FLYING_STAR, 70)
 score = Score(FontNames.arkhip)
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, 'icon.png', 90,
                     heroes, score)
+game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 
 pg.mouse.set_visible(mouse_visible)
 
 running_game = True
-state = State.menu
+state = GameState.menu
 menu = Menu(FontNames.broken_console, state, screen)
 
 while running_game:
@@ -79,18 +74,20 @@ while running_game:
             if len(enemies) < 3:
                 create_enemy(score)
 
-            screen.fill(SPACE) # before starships draw
             stars.update(screen_heigth)
             hero_bullets.update()
             enemy_bullets.update()
             heroes.update()
             enemies.update()
+            score.update()
 
+            screen.fill(SPACE)
             stars.draw(screen)
             hero_bullets.draw(screen)
             enemy_bullets.draw(screen)
             enemies.draw(screen)
             heroes.draw(screen)
+            hero.draw()
             score.draw()
 
         case state.exit:

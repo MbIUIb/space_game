@@ -113,8 +113,9 @@ class HeroStarShip(StarShip):
     def update(self):
         self.collide_bullets(enemy_bullets)
         self.hpbar.update(660, self.hpbar.h, self.health)
-        self.score.update()
 
+    def draw(self):
+        self.hpbar.draw()
 
 
 class EnemyStarShip(StarShip):
