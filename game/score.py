@@ -1,6 +1,6 @@
 import pygame as pg
 
-from config import SCORE, FontNames, screen
+from config import SCORE, screen
 
 
 class Score:
