@@ -3,8 +3,9 @@ from random import randint
 
 import pygame as pg
 
-from config import screen_width, screen_heigth, hero_bullets, enemy_bullets, enemies
-from tools import load_image, rot_center
+from config import (screen_width, screen_heigth, ImageNames, hero_bullets,
+                   enemy_bullets, enemies)
+from tools import Image
 from bullet import Bullet
 from health import Health
 from score import Score
@@ -14,7 +15,7 @@ class StarShip(pg.sprite.Sprite):
     def __init__(self, x, y, image, angle, group, score: Score):
         super().__init__()
         self.vel = pg.Vector2()
-        self.image = rot_center(load_image(image), angle)
+        self.image = Image(image).rot_center(angle).surf
         self.rect = self.image.get_rect(center=(x, y))
         self.health = 100
         self.speed = 7
@@ -158,4 +159,4 @@ def create_enemy(score: Score):
     x = randint(30, 770)
     y = randint(30, screen_heigth//2)
 
-    return EnemyStarShip(x, y, 'enemy.png', -90, enemies, score)
+    return EnemyStarShip(x, y, ImageNames.enemy, -90, enemies, score)
