@@ -15,6 +15,7 @@ class FontNames:
 class GameState(Enum):
     menu = 'menu'
     play = 'play'
+    pause = 'pause'
     exit = 'exit'
 
 
@@ -22,6 +23,12 @@ class MenuState(Enum):
     play = 'new game'
     records = 'records'
     settings = 'settings'
+    exit = 'exit'
+
+
+class PauseState(Enum):
+    resume = 'resume'
+    restart = 'restart'
     exit = 'exit'
 
 

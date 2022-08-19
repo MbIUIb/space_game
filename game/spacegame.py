@@ -7,7 +7,7 @@ from starships import HeroStarShip, create_enemy
 from background_stars import create_stars
 from tools import load_image
 from score import Score
-from menu import Menu
+from menu import Menu, Pause
 
 
 pg.init()
@@ -34,6 +34,7 @@ pg.mouse.set_visible(mouse_visible)
 running_game = True
 state = GameState.menu
 menu = Menu(FontNames.broken_console, state, screen)
+pause = Pause(FontNames.broken_console, state, screen)
 
 while running_game:
     keys = pg.key.get_pressed()
@@ -42,12 +43,11 @@ while running_game:
         case state.menu:
             menu.update(keys)
             state = menu.game_state
-
             menu.draw()
 
         case state.play:
             if keys[pg.K_ESCAPE]:
-                state = state.menu
+                state = state.pause
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -89,6 +89,11 @@ while running_game:
             heroes.draw(screen)
             hero.draw()
             score.draw()
+
+        case state.pause:
+            pause.update(keys)
+            state = pause.game_state
+            pause.draw()
 
         case state.exit:
             running_game = False
