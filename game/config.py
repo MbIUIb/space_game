@@ -1,9 +1,32 @@
 from dataclasses import dataclass
+from enum import Enum
 
 import pygame as pg
 
 
-# colors
+@dataclass
+class FontNames:
+    broken_console = 'assets/fonts/Broken Console Regular.ttf'
+    arkhip = 'assets/fonts/Arkhip.ttf'
+    impact = 'assets/fonts/Impact.ttf'
+    wiguru = 'assets/fonts/WiGuru.ttf'
+
+
+class GameState(Enum):
+    menu = 'menu'
+    play = 'play'
+    exit = 'exit'
+
+
+class MenuState(Enum):
+    play = 'new game'
+    records = 'records'
+    settings = 'settings'
+    exit = 'exit'
+
+
+# COLORS
+
 SPACE = (3, 4, 49)
 OUTLINE = (250, 65, 65)
 HP = (0, 255, 108)
@@ -14,32 +37,37 @@ MENU_ACTIVE = (71, 68, 118)
 # STAR_lvl2 = (198, 198, 206)
 # STAR_lvl3 = (109, 102, 114)
 
-@dataclass
-class FontNames:
-    broken_console = 'assets/fonts/Broken Console Regular.ttf'
-    arkhip = 'assets/fonts/Arkhip.ttf'
-    impact = 'assets/fonts/Impact.ttf'
-    wiguru = 'assets/fonts/WiGuru.ttf'
 
-# screen
+# SCREEN
+
 icon = 'icon.png'
 game_name = 'Space Game'
 screen_width = 800
 screen_heigth = 800
 screen = pg.display.set_mode((screen_width, screen_heigth))
+FPS = 60
 
-# initial mouse control settings
+
+# INITIAL MOUSE CONTROL SETTINGS
+
 mouse_control = False
 mouse_visible = False
 
-# sprite groups
+
+# SPRITE GROUPS
+
+class EnemiesGroup(pg.sprite.Group):
+    def draw(self, surf):
+        pg.sprite.Group.draw(self, surf)
+        for sprite in self.sprites():
+            sprite.hpbar.draw()
+
 stars = pg.sprite.Group()
 heroes = pg.sprite.Group()
 hero_bullets = pg.sprite.Group()
-enemies = pg.sprite.Group()
+enemies = EnemiesGroup()
 enemy_bullets = pg.sprite.Group()
 
-FPS = 60
 
 star_config = {'star_lvl1': 4,
                'star_lvl2': 3,

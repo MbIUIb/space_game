@@ -2,13 +2,7 @@ from enum import Enum
 
 import pygame as pg
 
-from config import SPACE, MENU_NONACTIVE, MENU_ACTIVE
-
-
-class MenuState(Enum):
-    play = 'play'
-    settings = 'settings'
-    exit = 'exit'
+from config import MenuState, MENU_NONACTIVE, MENU_ACTIVE
 
 
 class SettingsState(Enum):
@@ -22,7 +16,7 @@ class Menu:
 
         self._screen: pg.Surface = screen
         self._padding = padding
-        self._states = tuple(MenuState.__members__.keys())
+        self._states = tuple(MenuState.__members__.values())
         self._font = pg.font.Font(fontname, fontsize)
         self._texts = self._init_renders()
         self._block_rect = self._init_block_rect()
@@ -55,11 +49,13 @@ class Menu:
 
         if change_state:
             match self._states[self._current]:
-                case 'play':
+                case MenuState.play:
                     self.game_state = self.game_state.play
-                case 'settings':
+                case MenuState.records:
                     pass
-                case 'exit':
+                case MenuState.settings:
+                    pass
+                case MenuState.exit:
                     self.game_state = self.game_state.exit
 
     def draw(self):
@@ -67,11 +63,11 @@ class Menu:
 
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
-            text = self._font.render(self._states[idx], False, color)
+            text = self._font.render(self._states[idx].value, False, color)
             self._screen.blit(text, rect)
     
     def _init_renders(self) -> tuple:
-        return tuple(self._font.render(state, False, 0xFF0000FF)
+        return tuple(self._font.render(state.value, False, 0xFF0000FF)
                      for state in self._states)
     
     def _init_block_rect(self) -> pg.Rect:
