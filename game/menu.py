@@ -3,6 +3,7 @@ from enum import Enum
 import pygame as pg
 
 from config import MenuState, PauseState, MENU_NONACTIVE, MENU_ACTIVE
+from tools import Image
 
 
 class SettingsState(Enum):
@@ -102,6 +103,15 @@ class Pause(Base):
                  padding: int = 64, fontsize: int = 64):
         self._states = tuple(PauseState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
+        self._blured_surf = Image(surf=self._screen).blur(35).surf
+
+    @property
+    def screen(self):
+        return
+
+    @screen.setter
+    def screen(self, surf: pg.Surface):
+        self._blured_surf = Image(surf=surf).blur(35).surf
 
     def update(self, keys):
         change_state = False
@@ -135,7 +145,7 @@ class Pause(Base):
                     self.game_state = self.game_state.menu
 
     def draw(self):
-        self._screen.fill((0, 0, 0))
+        self._screen.blit(self._blured_surf, (0, 0))
 
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE

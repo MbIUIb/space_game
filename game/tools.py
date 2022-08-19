@@ -34,3 +34,10 @@ class Image:
         self._surf = pg.transform.rotate(self._surf, angle)
         return Image(surf=self._surf)
 
+    def blur(self, amt: float):
+        scale = 1 / amt
+        surf_size = self._surf.get_size()
+        scale_size = int(surf_size[0] * scale), int(surf_size[1] * scale)
+        surf = pg.transform.smoothscale(self._surf, scale_size)
+        surf = pg.transform.smoothscale(surf, surf_size)
+        return Image(surf=surf)

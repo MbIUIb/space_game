@@ -48,6 +48,7 @@ while running_game:
         case state.play:
             if keys[pg.K_ESCAPE]:
                 state = state.pause
+                pause.screen = screen
 
             for event in pg.event.get():
                 if event.type == pg.QUIT:
