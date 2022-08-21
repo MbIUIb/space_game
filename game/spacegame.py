@@ -75,6 +75,10 @@ while running_game:
             if len(enemies) < 3:
                 create_enemy(score)
 
+            if hero.health <= 0 and not len(hero_bullets):
+                # output score and suggestion to start over
+                state = state.menu # plug
+
             stars.update(screen_heigth)
             hero_bullets.update()
             enemy_bullets.update()
