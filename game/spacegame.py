@@ -24,7 +24,7 @@ clock = pg.time.Clock()
 FLYING_STAR = pg.event.custom_type()
 pg.time.set_timer(FLYING_STAR, 70)
 
-score = Score(FontNames.arkhip)
+score = Score(FontNames.broken_console)
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.icon, 90,
                     heroes, score)
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
