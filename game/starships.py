@@ -14,16 +14,22 @@ from score import Score
 class StarShip(pg.sprite.Sprite):
     def __init__(self, x, y, image, angle, group, score: Score):
         super().__init__()
+        # init states
+        self.begin_x = x
+        self.begin_y = y
+        self.max_health = 100
+
+        # ship spec
         self.vel = pg.Vector2()
         self.image = Image(image).rot_center(angle).surf
         self.rect = self.image.get_rect(center=(x, y))
-        self.health = 100
+        self.health = self.max_health
         self.speed = 7
         self.speed4mouse = 12
         self.score = score
         self.score_points = 0
 
-        # bullet specification
+        # bullet spec
         self.bullets = pg.sprite.Group()
         self.bullet_pos_x = 0
         self.bullet_pos_y = 35
@@ -117,6 +123,11 @@ class HeroStarShip(StarShip):
 
     def draw(self):
         self.hpbar.draw()
+
+    def restart(self):
+        self.rect = self.image.get_rect(center=(self.begin_x, self.begin_y))
+        self.health = self.max_health
+        self.score = 0
 
 
 class EnemyStarShip(StarShip):
