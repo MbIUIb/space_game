@@ -86,3 +86,5 @@ enemy_bullets = pg.sprite.Group()
 star_config = {'assets/images/star_lvl1': 4,
                'assets/images/star_lvl2': 3,
                'assets/images/star_lvl3': 2}
+
+database = 'assets/database/database.db'
