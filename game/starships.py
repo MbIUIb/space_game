@@ -68,7 +68,7 @@ class StarShip(pg.sprite.Sprite):
 
     def shoot(self):
         fire_time = time()
-        if fire_time - self.fire_flag > self.fire_pace:
+        if fire_time - self.fire_flag > self.fire_pace and self.health > 0:
             self.fire_flag = fire_time
             return Bullet(self.rect.centerx + self.bullet_pos_x,
                           self.rect.centery + self.bullet_pos_y,
