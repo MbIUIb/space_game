@@ -1,6 +1,6 @@
 import sqlite3
 
-from config import database
+from config import database, DBAutentication as dba
 
 
 class Database:
@@ -41,10 +41,10 @@ class Database:
 
         user_password = self.cursor.execute("""SELECT password FROM users WHERE login == ?""", login).fetchone()
         if user_password is None:
-            return 'login error'
+            return dba.login_error
         if password == user_password[0]:
-            return 'successful'
-        return 'password error'
+            return dba.successful
+        return dba.pass_error
 
     def change_password(self, login, new_password):
         self.cursor.execute("""UPDATE users set password = ? WHERE login == ?""", (new_password, login))

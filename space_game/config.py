@@ -42,6 +42,12 @@ class PauseState(Enum):
     exit = 'exit'
 
 
+class DBAutentication(Enum):
+    login_error = 'login error'
+    pass_error = 'password error'
+    successful = 'successful'
+
+
 # COLORS
 
 SPACE = (3, 4, 49)
