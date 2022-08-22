@@ -7,9 +7,9 @@ from tools import Image
 
 
 class Bullet(Sprite):
-    def __init__(self, x, y, group, speed: V2, damage=10):
+    def __init__(self, x, y, group, speed: V2, damage=10, image=ImageNames.bullet3x7):
         super().__init__()
-        self.image = Image(ImageNames.bullet3x10).surf
+        self.image = Image(image).surf
         self.rect = self.image.get_rect(center=(x, y))
         self.speed = speed
         self.damage = damage

@@ -12,7 +12,7 @@ from score import Score
 
 
 class StarShip(pg.sprite.Sprite):
-    def __init__(self, x, y, image, angle, group, score: Score):
+    def __init__(self, x, y, image, angle, group, score: Score, bullet_img=ImageNames.bullet3x7):
         super().__init__()
         # init states
         self.begin_x = x
@@ -30,6 +30,7 @@ class StarShip(pg.sprite.Sprite):
         self.score_points = 0
 
         # bullet spec
+        self.bullet_img = bullet_img
         self.bullets = pg.sprite.Group()
         self.bullet_pos_x = 0
         self.bullet_pos_y = 35
@@ -80,7 +81,8 @@ class StarShip(pg.sprite.Sprite):
                           self.rect.centery + self.bullet_pos_y,
                           self.bullets,
                           self.bullet_speed,
-                          self.bullet_damage)
+                          self.bullet_damage,
+                          self.bullet_img)
 
     def destruction(self):
         if self.health <= 0:
@@ -110,6 +112,7 @@ class HeroStarShip(StarShip):
     def __init__(self, x, y, image, angle, group, score: Score):
         super().__init__(x, y, image, angle, group, score)
 
+        self.bullet_img = ImageNames.bullet3x10
         self.bullets = hero_bullets
         self.bullet_pos_y = -35
         # self.bullet_speed.scale_to_length(15)

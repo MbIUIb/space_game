@@ -14,8 +14,10 @@ class FontNames:
 
 @dataclass
 class ImageNames:
-    icon = 'assets/images/icon.png'
+    icon = 'assets/images/hero_lvl2.png'
+    hero_ship = 'assets/images/hero_lvl1.png'
     enemy = 'assets/images/enemy.png'
+    bullet3x7 = 'assets/images/bullet3x7.png'
     bullet3x10 = 'assets/images/bullet3x10.png'
 
 
