@@ -81,7 +81,7 @@ class Menu(Base):
         if change_state:
             match self._states[self._current]:
                 case MenuState.play:
-                    self.game_state = self.game_state.play
+                    self.game_state = self.game_state.restart
                 case MenuState.records:
                     pass
                 case MenuState.settings:
@@ -140,7 +140,7 @@ class Pause(Base):
                 case PauseState.resume:
                     self.game_state = self.game_state.play
                 case PauseState.restart:
-                    pass
+                    self.game_state = self.game_state.restart
                 case PauseState.exit:
                     self.game_state = self.game_state.menu
 

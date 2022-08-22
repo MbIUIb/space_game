@@ -25,6 +25,7 @@ class GameState(Enum):
     menu = 'menu'
     play = 'play'
     pause = 'pause'
+    restart = 'restart'
     exit = 'exit'
 
 
