@@ -4,8 +4,6 @@
   
 </div>
 
-| Game example                                | Main menu                                     | Pause menu                                      |
-| ------------------------------------------- | --------------------------------------------- | ----------------------------------------------- |
-| ![example](game/assets/samples/sample1.gif) | ![mainmunu](game/assets/samples/mainmenu.png) | ![pausemunu](game/assets/samples/pausemenu.png) |
-
-
+| Game example                                      | Main menu                                           | Pause menu                                      |
+| ------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------- |
+| ![example](space_game/assets/samples/sample1.gif) | ![mainmunu](space_game/assets/samples/mainmenu.png) | ![pausemunu](space_game/assets/samples/pausemenu.png) |

@@ -101,6 +101,11 @@ while running_game:
             state = pause.game_state
             pause.draw()
 
+        case state.restart:
+            hero.restart()
+            # enemy restart
+            state = state.play
+
         case state.exit:
             running_game = False
 
