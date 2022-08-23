@@ -109,8 +109,8 @@ class StarShip(pg.sprite.Sprite):
 
 
 class HeroStarShip(StarShip):
-    def __init__(self, x, y, image, angle, group, score: Score):
-        super().__init__(x, y, image, angle, group, score)
+    def __init__(self, x, y, image, angle, hero_group, score: Score):
+        super().__init__(x, y, image, angle, hero_group, score)
 
         self.bullet_img = ImageNames.bullet3x10
         self.bullets = hero_bullets
@@ -174,3 +174,12 @@ def create_enemy(score: Score):
     y = randint(30, screen_heigth//2)
 
     return EnemyStarShip(x, y, ImageNames.enemy, -90, enemies, score)
+
+
+def ship_groups_collision(hero_group, enemy_group):
+    for hero in hero_group:
+        for enemy in enemy_group:
+            if not pg.sprite.collide_mask(hero, enemy):
+                continue
+            hero.health -= 0.5
+            enemy.health -= 1

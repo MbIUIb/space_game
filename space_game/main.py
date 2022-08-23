@@ -3,7 +3,7 @@ from enum import Enum
 import pygame as pg
 
 from config import *
-from starships import HeroStarShip, create_enemy
+from starships import HeroStarShip, create_enemy, ship_groups_collision
 from background_stars import create_stars
 from tools import Image
 from score import Score
@@ -85,6 +85,7 @@ while running_game:
             heroes.update()
             enemies.update()
             score.update()
+            ship_groups_collision(heroes, enemies)
 
             screen.fill(SPACE)
             stars.draw(screen)
