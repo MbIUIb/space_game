@@ -84,6 +84,9 @@ class StarShip(pg.sprite.Sprite):
                           self.bullet_damage,
                           self.bullet_img)
 
+    def update(self):
+        self.destruction()
+
     def destruction(self):
         if self.health <= 0:
             self.score += self.score_points
@@ -101,7 +104,6 @@ class StarShip(pg.sprite.Sprite):
             if pg.sprite.collide_mask(self, bullet):
                 if self.health > 0:
                     self.health -= bullet.damage
-                    self.destruction()
                 bullet.kill()
 
     def __del__(self):
@@ -121,6 +123,8 @@ class HeroStarShip(StarShip):
         self.hpbar = Health(self.health, 250, 15)
 
     def update(self):
+        super().update()
+
         self.collide_bullets(enemy_bullets)
         self.hpbar.update(660, self.hpbar.h, self.health)
 
@@ -149,6 +153,8 @@ class EnemyStarShip(StarShip):
         self.y_direction = 1
 
     def update(self):
+        super().update()
+
         self.enemy_movement()
 
         self.shoot()
