@@ -89,7 +89,7 @@ class StarShip(pg.sprite.Sprite):
 
     def destruction(self):
         if self.health <= 0:
-            self.score += self.score_points
+            self.score.score += self.score_points
             self.detonation()
         else:
             # destruction animation
@@ -134,7 +134,7 @@ class HeroStarShip(StarShip):
     def restart(self):
         self.rect = self.image.get_rect(center=(self.begin_x, self.begin_y))
         self.health = self.max_health
-        self.score = 0
+        self.score.score = 0
 
 
 class EnemyStarShip(StarShip):

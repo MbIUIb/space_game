@@ -58,7 +58,7 @@ class Base:
 
             if event.type == pg.QUIT:
                 self.game_state = self.game_state.exit
-            elif event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN:
                 clicked = True
 
             for idx, rect in enumerate(self._texts_rects):
@@ -106,10 +106,12 @@ class Menu(Base):
 
 class Pause(Base):
     def __init__(self, fontname: str, game_state, screen: pg.Surface,
-                 padding: int = 64, fontsize: int = 64):
+                 hero, padding: int = 64, fontsize: int = 64):
         self._states = tuple(PauseState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
+
         self._blured_surf = Image(surf=self._screen).blur(35).surf
+        self._hero = hero
 
     @property
     def screen(self):
@@ -121,10 +123,13 @@ class Pause(Base):
 
     def update(self, keys):
         if not self._change_state(keys):
+            self.game_state = self.game_state.pause
             return
 
         match self._states[self._current]:
             case PauseState.resume:
+                if self._hero.health <= 0:
+                    return
                 self.game_state = self.game_state.play
             case PauseState.restart:
                 self.game_state = self.game_state.restart
@@ -137,4 +142,12 @@ class Pause(Base):
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
             text = self._font.render(self._states[idx].value, False, color)
+
+            if idx == 0 and self._hero.health <= 0:
+                text = self._font.render(f"Scored: {self._hero.score.score}",
+                                         False, MENU_ACTIVE)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+
             self._screen.blit(text, rect)
