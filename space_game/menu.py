@@ -26,6 +26,8 @@ class Base:
         self._current = 0
 
         self.game_state = game_state
+
+        self.pressed_keys = False
     
     def _init_renders(self) -> tuple:
         return tuple(self._font.render(state.value, False, 0xFF0000FF)
@@ -50,14 +52,12 @@ class Base:
             y += rect.h + self._padding
         return tuple(rects)
 
-    def _change_state(self, keys) -> bool:
+    def _change_state(self, events) -> bool:
         change_state = False
 
-        for event in pg.event.get():
+        for event in events:
             clicked = False
 
-            if event.type == pg.QUIT:
-                self.game_state = self.game_state.exit
             if event.type == pg.MOUSEBUTTONDOWN:
                 clicked = True
 
@@ -68,10 +68,16 @@ class Base:
                     if clicked:
                         change_state = True
 
-        if keys[pg.K_RETURN] or keys[pg.K_SPACE]:
-            change_state = True
+            if event.type == pg.KEYDOWN:
+                if event.key in [pg.K_SPACE, pg.K_RETURN]:
+                    self.pressed_keys = True
+            if self.pressed_keys and event.type == pg.KEYUP:
+                if event.key in [pg.K_SPACE, pg.K_RETURN]:
+                    change_state = True
+                    self.pressed_keys = False
 
         return change_state
+
 
 class Menu(Base):
     def __init__(self, fontname: str, game_state, screen: pg.Surface,
