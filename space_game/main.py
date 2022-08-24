@@ -3,7 +3,7 @@ from enum import Enum
 import pygame as pg
 
 from config import *
-from starships import HeroStarShip, create_enemy
+from starships import HeroStarShip, create_enemy, ship_groups_collision
 from background_stars import create_stars
 from tools import Image
 from score import Score
@@ -34,7 +34,7 @@ pg.mouse.set_visible(mouse_visible)
 running_game = True
 state = GameState.menu
 menu = Menu(FontNames.broken_console, state, screen)
-pause = Pause(FontNames.broken_console, state, screen)
+pause = Pause(FontNames.broken_console, state, screen, hero)
 
 while running_game:
     keys = pg.key.get_pressed()
@@ -76,8 +76,7 @@ while running_game:
                 create_enemy(score)
 
             if hero.health <= 0 and not len(hero_bullets):
-                # output score and suggestion to start over
-                state = state.menu # plug
+                state = state.pause
 
             stars.update(screen_heigth)
             hero_bullets.update()
@@ -85,6 +84,7 @@ while running_game:
             heroes.update()
             enemies.update()
             score.update()
+            ship_groups_collision(heroes, enemies)
 
             screen.fill(SPACE)
             stars.draw(screen)

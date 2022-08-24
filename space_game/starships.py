@@ -84,9 +84,12 @@ class StarShip(pg.sprite.Sprite):
                           self.bullet_damage,
                           self.bullet_img)
 
+    def update(self):
+        self.destruction()
+
     def destruction(self):
         if self.health <= 0:
-            self.score += self.score_points
+            self.score.score += self.score_points
             self.detonation()
         else:
             # destruction animation
@@ -101,7 +104,6 @@ class StarShip(pg.sprite.Sprite):
             if pg.sprite.collide_mask(self, bullet):
                 if self.health > 0:
                     self.health -= bullet.damage
-                    self.destruction()
                 bullet.kill()
 
     def __del__(self):
@@ -109,8 +111,8 @@ class StarShip(pg.sprite.Sprite):
 
 
 class HeroStarShip(StarShip):
-    def __init__(self, x, y, image, angle, group, score: Score):
-        super().__init__(x, y, image, angle, group, score)
+    def __init__(self, x, y, image, angle, hero_group, score: Score):
+        super().__init__(x, y, image, angle, hero_group, score)
 
         self.bullet_img = ImageNames.bullet3x10
         self.bullets = hero_bullets
@@ -121,6 +123,8 @@ class HeroStarShip(StarShip):
         self.hpbar = Health(self.health, 250, 15)
 
     def update(self):
+        super().update()
+
         self.collide_bullets(enemy_bullets)
         self.hpbar.update(660, self.hpbar.h, self.health)
 
@@ -130,7 +134,7 @@ class HeroStarShip(StarShip):
     def restart(self):
         self.rect = self.image.get_rect(center=(self.begin_x, self.begin_y))
         self.health = self.max_health
-        self.score = 0
+        self.score.score = 0
 
 
 class EnemyStarShip(StarShip):
@@ -149,6 +153,8 @@ class EnemyStarShip(StarShip):
         self.y_direction = 1
 
     def update(self):
+        super().update()
+
         self.enemy_movement()
 
         self.shoot()
@@ -174,3 +180,12 @@ def create_enemy(score: Score):
     y = randint(30, screen_heigth//2)
 
     return EnemyStarShip(x, y, ImageNames.enemy, -90, enemies, score)
+
+
+def ship_groups_collision(hero_group, enemy_group):
+    for hero in hero_group:
+        for enemy in enemy_group:
+            if not pg.sprite.collide_mask(hero, enemy):
+                continue
+            hero.health -= 0.5
+            enemy.health -= 1
