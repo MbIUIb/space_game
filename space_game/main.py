@@ -38,10 +38,15 @@ pause = Pause(FontNames.broken_console, state, screen, hero)
 
 while running_game:
     keys = pg.key.get_pressed()
+    events = pg.event.get()
+
+    for event in events:
+        if event.type == pg.QUIT:
+            running_game = False
 
     match state:
         case state.menu:
-            menu.update(keys)
+            menu.update(events)
             state = menu.game_state
             menu.draw()
 
@@ -50,10 +55,8 @@ while running_game:
                 state = state.pause
                 pause.screen = screen
 
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    running_game = False
-                elif event.type == FLYING_STAR:
+            for event in events:
+                if event.type == FLYING_STAR:
                     create_stars(stars)
 
             if mouse_control and not keys[pg.K_LALT]:
@@ -96,7 +99,7 @@ while running_game:
             score.draw()
 
         case state.pause:
-            pause.update(keys)
+            pause.update(events)
             state = pause.game_state
             pause.draw()
 
