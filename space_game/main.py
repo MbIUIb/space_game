@@ -102,7 +102,8 @@ while running_game:
 
         case state.restart:
             hero.restart()
-            # enemy restart
+            enemies.empty()
+            enemy_bullets.empty()
             state = state.play
 
         case state.exit:
