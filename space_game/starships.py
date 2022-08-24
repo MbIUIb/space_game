@@ -106,9 +106,6 @@ class StarShip(pg.sprite.Sprite):
                     self.health -= bullet.damage
                 bullet.kill()
 
-    def __del__(self):
-        print("starship del")
-
 
 class HeroStarShip(StarShip):
     def __init__(self, x, y, image, angle, group, score: Score):
