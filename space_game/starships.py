@@ -111,8 +111,8 @@ class StarShip(pg.sprite.Sprite):
 
 
 class HeroStarShip(StarShip):
-    def __init__(self, x, y, image, angle, hero_group, score: Score):
-        super().__init__(x, y, image, angle, hero_group, score)
+    def __init__(self, x, y, image, angle, group, score: Score):
+        super().__init__(x, y, image, angle, group, score)
 
         self.bullet_img = ImageNames.bullet3x10
         self.bullets = hero_bullets
@@ -121,6 +121,7 @@ class HeroStarShip(StarShip):
         self.bullet_damage = 10
 
         self.hpbar = Health(self.health, 250, 15)
+        self.group = group
 
     def update(self):
         super().update()
@@ -132,6 +133,7 @@ class HeroStarShip(StarShip):
         self.hpbar.draw()
 
     def restart(self):
+        self.add(self.group)
         self.rect = self.image.get_rect(center=(self.begin_x, self.begin_y))
         self.health = self.max_health
         self.score.score = 0
