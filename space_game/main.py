@@ -1,7 +1,3 @@
-from enum import Enum
-
-import pygame as pg
-
 from config import *
 from starships import HeroStarShip, create_enemy, ship_groups_collision
 from background_stars import create_stars
