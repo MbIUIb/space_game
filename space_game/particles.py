@@ -17,16 +17,17 @@ class ParticleSystem:
 
     def create_particle(self, x, y):
         direction_x = choice([-1, 1])
-        speed_x = randint(1, self.max_speed_x)
+        speed_x = randint(0, self.max_speed_x)
         speed_y = randint(1, self.max_speed_y)
         beginning_life = time()
 
         return [[x, y], [speed_x * direction_x, speed_y * self.direction_y], beginning_life]
 
     def add_particles(self, x, y):
-        if len(self.particles) < 300:
+        if len(self.particles) < 600:
 
-            self.particles += [self.create_particle(x, y), self.create_particle(x, y), self.create_particle(x, y)]
+            self.particles += [self.create_particle(x, y), self.create_particle(x, y), self.create_particle(x, y),
+                               self.create_particle(x, y), self.create_particle(x, y), self.create_particle(x, y)]
 
     def delete_particles(self):
         self.particles = [particle for particle in self.particles if time() - particle[2] < 0.1]
