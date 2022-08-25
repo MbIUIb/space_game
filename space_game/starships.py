@@ -169,15 +169,17 @@ class EnemyStarShip(StarShip):
 
         self.hpbar.update(self.rect.centerx, self.rect.centery-45, self.health)
 
-    def enemy_movement(self, type=0):
+    def enemy_movement(self, type=1):
         match type:
-            case 0: # simple left-right movement
+            case 0: # static pos
+                return
+            case 1: # simple left-right movement
                 if self.rect.centerx < 50:
                     self.x_direction = 1
                 if self.rect.centerx > 750:
                     self.x_direction = -1
                 self.rect.centerx += self.speed * self.x_direction
-            case 1:
+            case 2:
                 # new type
                 pass
 
