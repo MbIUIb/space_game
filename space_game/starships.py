@@ -4,11 +4,12 @@ from random import randint
 import pygame as pg
 
 from config import (screen_width, screen_heigth, ImageNames, hero_bullets,
-                   enemy_bullets, enemies)
+                   enemy_bullets, enemies, OUTLINE)
 from tools import Image
 from bullet import Bullet
 from health import Health
 from score import Score
+from particles import ParticleSystem
 
 
 class StarShip(pg.sprite.Sprite):
@@ -28,6 +29,7 @@ class StarShip(pg.sprite.Sprite):
         self.speed4mouse = 12
         self.score = score
         self.score_points = 0
+        self.particles = ParticleSystem()
 
         # bullet spec
         self.bullet_img = bullet_img
@@ -110,6 +112,7 @@ class StarShip(pg.sprite.Sprite):
 class HeroStarShip(StarShip):
     def __init__(self, x, y, image, angle, group, score: Score):
         super().__init__(x, y, image, angle, group, score)
+        self.particles = ParticleSystem(max_speed_x=2, max_speed_y=5)
 
         self.bullet_img = ImageNames.bullet3x10
         self.bullets = hero_bullets
@@ -122,6 +125,8 @@ class HeroStarShip(StarShip):
 
     def update(self):
         super().update()
+        self.particles.add_particles(self.rect.centerx, self.rect.bottom - 15)
+        self.particles.update()
 
         self.collide_bullets(enemy_bullets)
         self.hpbar.update(660, self.hpbar.h, self.health)
@@ -141,6 +146,7 @@ class EnemyStarShip(StarShip):
         super().__init__(x, y, image, angle, group, score)
         self.speed = 3
         self.score_points = 100
+        self.particles = ParticleSystem(max_speed_x=1, max_speed_y=5, direction_y=-1, color=OUTLINE)
 
         self.bullets = enemy_bullets
         self.bullet_speed = pg.Vector2(0, 7)
@@ -153,6 +159,8 @@ class EnemyStarShip(StarShip):
 
     def update(self):
         super().update()
+        self.particles.add_particles(self.rect.centerx, self.rect.top+20)
+        self.particles.update()
 
         self.enemy_movement()
 

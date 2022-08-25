@@ -77,6 +77,8 @@ while running_game:
             if hero.health <= 0 and not len(hero_bullets):
                 state = state.pause
 
+            screen.fill(SPACE)
+
             stars.update(screen_heigth)
             hero_bullets.update()
             enemy_bullets.update()
@@ -85,7 +87,6 @@ while running_game:
             score.update()
             ship_groups_collision(heroes, enemies)
 
-            screen.fill(SPACE)
             stars.draw(screen)
             hero_bullets.draw(screen)
             enemy_bullets.draw(screen)
