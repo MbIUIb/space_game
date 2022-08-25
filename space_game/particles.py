@@ -26,8 +26,7 @@ class ParticleSystem:
     def add_particles(self, x, y):
         if len(self.particles) < 600:
 
-            self.particles += [self.create_particle(x, y), self.create_particle(x, y), self.create_particle(x, y),
-                               self.create_particle(x, y), self.create_particle(x, y), self.create_particle(x, y)]
+            self.particles += [self.create_particle(x, y) for _ in range(10)]
 
     def delete_particles(self):
         self.particles = [particle for particle in self.particles if time() - particle[2] < 0.1]
