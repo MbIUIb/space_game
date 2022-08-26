@@ -26,11 +26,11 @@ class Database:
         return self.cursor.fetchall()
 
     def new_user(self, login, password):
-        if (login, ) not in self.get_user_logins():
-            self.cursor.execute("""INSERT INTO users (login, password) VALUES(?, ?)""", (login, password))
-            self.commit()
-            return 1
-        return 0
+        if (login, ) in self.get_user_logins():
+            return 0
+        self.cursor.execute("""INSERT INTO users (login, password) VALUES(?, ?)""", (login, password))
+        self.commit()
+        return 1
 
     def del_user(self, login):
         self.cursor.execute("""DELETE FROM users WHERE login == ?""", (login, ))

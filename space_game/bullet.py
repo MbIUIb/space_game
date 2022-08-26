@@ -16,11 +16,12 @@ class Bullet(Sprite):
         self.add(group)
 
     def update(self):
-        if 0 < self.rect.centery < screen_heigth:
-            self.rect.centery += self.speed.y
+        if 0 < self.rect.centerx < screen_width:
+            self.rect.centerx += self.speed.x
         else:
             self.kill()
-        if 0 < self.rect.centerx < screen_heigth:
-            self.rect.centerx += self.speed.x
+
+        if 0 < self.rect.centery < screen_heigth:
+            self.rect.centery += self.speed.y
         else:
             self.kill()
