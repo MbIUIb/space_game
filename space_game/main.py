@@ -26,7 +26,7 @@ hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.icon, 90,
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 
 pg.mouse.set_visible(mouse_visible)
-
+hero.score.score += 4900
 running_game = True
 state = GameState.menu
 menu = Menu(FontNames.broken_console, state, screen)
@@ -70,9 +70,24 @@ while running_game:
                     hero.down_movement()
             if keys[pg.K_SPACE]:
                 hero.shoot()
+            if keys[pg.K_q]:
+                hero.score.score = 4900
 
             if len(enemies) < 3:
-                create_enemy(score)
+                if 0 <= score.score < 1000:
+                    create_enemy(score, 50)
+                elif 1000 <= score.score < 2000:
+                    create_enemy(score, 200, 150)
+                    hero.bullet_damage = 15
+                elif 2000 <= score.score < 2700:
+                    create_enemy(score, 500, 230)
+                    hero.bullet_damage = 30
+                elif 2700 <= score.score < 5000:
+                    create_enemy(score, 1000, 415)
+                    hero.bullet_damage = 40
+                elif 5000 <= score.score:
+                    create_enemy(score, 10000, 740)
+                    hero.bullet_damage = 75
 
             if hero.health <= 0 and not len(hero_bullets):
                 state = state.pause
