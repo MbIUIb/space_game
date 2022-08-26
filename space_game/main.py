@@ -68,8 +68,8 @@ while running_game:
                     hero.up_movement()
                 if keys[pg.K_DOWN] or keys[pg.K_s] or keys[1099]:
                     hero.down_movement()
-                if keys[pg.K_SPACE]:
-                    hero.shoot()
+            if keys[pg.K_SPACE]:
+                hero.shoot()
 
             if len(enemies) < 3:
                 create_enemy(score)
