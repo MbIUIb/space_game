@@ -22,6 +22,7 @@ class StarShip(pg.sprite.Sprite):
 
         # ship spec
         self.vel = pg.Vector2()
+        self.angle = angle
         self.image = Image(image).rot_center(angle).surf
         self.rect = self.image.get_rect(center=(x, y))
         self.health = self.max_health
@@ -88,7 +89,8 @@ class StarShip(pg.sprite.Sprite):
                           self.bullets,
                           self.bullet_speed,
                           self.bullet_damage,
-                          self.bullet_img)
+                          self.bullet_img,
+                          self.angle)
 
     def update(self):
         self.destruction()
