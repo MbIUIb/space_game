@@ -25,7 +25,7 @@ class Health:
 
     def draw(self):
         fill_rect = self._bar_rect.copy()
-        fill_rect.w *= self._curr_health / 100
+        fill_rect.w = fill_rect.w * self._curr_health / self._full_health
 
         self._surf.fill(OUTLINE)
         pg.draw.rect(self._surf, HP, fill_rect)
