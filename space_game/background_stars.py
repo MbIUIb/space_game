@@ -1,14 +1,15 @@
-import pygame
-from pygame.sprite import Sprite
-from random import randint
 import random
+
+import pygame as pg
+from random import randint
+
 from config import screen_width, star_config
 from tools import Image
 
 
-class Star(Sprite):
+class Star(pg.sprite.Sprite):
     def __init__(self, x, speed, filename, group):
-        Sprite.__init__(self)
+        pg.sprite.Sprite.__init__(self)
         self.image = Image(filename).surf
         self.rect = self.image.get_rect(center=(x, 0))
         self.speed = speed
