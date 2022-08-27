@@ -13,7 +13,7 @@ from particles import ParticleSystem
 
 
 class StarShip(pg.sprite.Sprite):
-    def __init__(self, x, y, image, angle, group, score: Score, max_health=100, score_points=0, bullet_img=ImageNames.bullet3x7):
+    def __init__(self, x, y, image, angle, group, score: Score, max_health=100, score_points=0, lvl=1, bullet_img=ImageNames.bullet3x7):
         super().__init__()
         # init states
         self.begin_x = x
@@ -30,6 +30,7 @@ class StarShip(pg.sprite.Sprite):
         self.speed4mouse = 12
         self.score = score
         self.score_points = score_points
+        self.lvl = lvl
 
         # bullet spec
         self.bullet_img = bullet_img
@@ -84,13 +85,32 @@ class StarShip(pg.sprite.Sprite):
         fire_time = time()
         if fire_time - self.fire_flag > self.fire_pace and self.health > 0:
             self.fire_flag = fire_time
-            return Bullet(self.rect.centerx + self.bullet_pos_x,
-                          self.rect.centery + self.bullet_pos_y,
-                          self.bullets,
-                          self.bullet_speed,
-                          self.bullet_damage,
-                          self.bullet_img,
-                          self.angle)
+            match self.lvl:
+                case 1:
+                    return Bullet(self.rect.centerx + self.bullet_pos_x,
+                                  self.rect.centery + self.bullet_pos_y,
+                                  self.bullets,
+                                  self.bullet_speed,
+                                  self.bullet_damage,
+                                  self.bullet_img,
+                                  self.angle)
+                case 2:
+                    return Bullet(self.rect.centerx - 27,
+                                  self.rect.centery,
+                                  self.bullets,
+                                  self.bullet_speed,
+                                  self.bullet_damage,
+                                  self.bullet_img,
+                                  self.angle), \
+                           Bullet(self.rect.centerx + 27,
+                                  self.rect.centery,
+                                  self.bullets,
+                                  self.bullet_speed,
+                                  self.bullet_damage,
+                                  self.bullet_img,
+                                  self.angle)
+                case 3:  # new lvls
+                    pass
 
     def update(self):
         self.destruction()

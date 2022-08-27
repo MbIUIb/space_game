@@ -10,7 +10,7 @@ pg.init()
 
 screen = pg.display.set_mode((screen_width, screen_heigth))
 
-icon = Image(ImageNames.icon).surf
+icon = Image(ImageNames.hero_ship1).surf
 pg.display.set_icon(icon)
 pg.display.set_caption(game_name)
 
@@ -21,7 +21,7 @@ FLYING_STAR = pg.event.custom_type()
 pg.time.set_timer(FLYING_STAR, 70)
 
 score = Score(FontNames.broken_console)
-hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.icon, 90,
+hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.hero_ship1, 90,
                     heroes, score)
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 
@@ -88,6 +88,8 @@ while running_game:
                 elif 5000 <= score.score:
                     create_enemy(score, 10000, 740)
                     hero.bullet_damage = 75
+                    hero.image = Image(ImageNames.hero_ship2).rot_center(90).surf
+                    hero.lvl = 2
 
             if hero.health <= 0 and not len(hero_bullets):
                 state = state.pause
