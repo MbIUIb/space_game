@@ -162,7 +162,7 @@ class HeroStarShip(StarShip):
         self.exhaust.update()
 
         self.collide_bullets(enemy_bullets)
-        self.hpbar.update(660, self.hpbar.h, self.health)
+        self.hpbar.update(screen_width - 140, self.hpbar.h, self.health)
 
     def draw(self):
         self.hpbar.draw()
@@ -191,37 +191,41 @@ class EnemyStarShip(StarShip):
 
         self.x_direction = 1
         self.y_direction = 1
+        self.mvm_type = randint(0, 2)
 
     def update(self):
         super().update()
         self.exhaust.add_particles(self.rect.centerx, self.rect.top + 20)
         self.exhaust.update()
 
-        self.enemy_movement()
+        self.enemy_movement(self.mvm_type)
 
         self.shoot()
         self.collide_bullets(hero_bullets)
 
         self.hpbar.update(self.rect.centerx, self.rect.centery-45, self.health)
 
-    def enemy_movement(self, type=1):
+    def enemy_movement(self, type=2):
         match type:
             case 0: # static pos
                 return
+
             case 1: # simple left-right movement
-                if self.rect.centerx < 50:
-                    self.x_direction = 1
-                if self.rect.centerx > 750:
-                    self.x_direction = -1
+                if self.rect.centerx < 50 or self.rect.centerx > screen_width - 50:
+                    self.x_direction *= -1
                 self.rect.centerx += self.speed * self.x_direction
-            case 2:
-                # new type
-                pass
+
+            case 2: # left-right + down movement
+                if self.rect.centerx < 50 or self.rect.centerx > screen_width - 50:
+                    self.x_direction *= -1
+                    self.rect.centery += screen_heigth // 20
+                self.rect.centerx += self.speed * self.x_direction
+
 
 
 def create_enemy(score: Score, max_health=100, score_points=100):
-    x = randint(30, 770)
-    y = randint(30, screen_heigth//2)
+    x = randint(50, screen_width - 50)
+    y = randint(30, screen_heigth // 2)
 
     return EnemyStarShip(x, y, ImageNames.enemy, -90, enemies, score, max_health, score_points)
 
