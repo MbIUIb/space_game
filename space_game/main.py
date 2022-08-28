@@ -22,7 +22,7 @@ pg.time.set_timer(FLYING_STAR, 70)
 
 score = Score(FontNames.broken_console)
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.hero_ship1, 90,
-                    heroes, score)
+                    heroes, score, max_health=200)
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 
 pg.mouse.set_visible(mouse_visible)
@@ -73,7 +73,7 @@ while running_game:
             if keys[pg.K_q]:
                 hero.score.score = 4900
 
-            if len(enemies) < 3:
+            if len(enemies) < 4:
                 if 0 <= score.score < 1000:
                     create_enemy(score, 50)
                 elif 1000 <= score.score < 2000:
@@ -93,6 +93,10 @@ while running_game:
 
             if hero.health <= 0 and not len(hero_bullets):
                 state = state.pause
+
+            for enemy in enemies:
+                if enemy.rect.centery >= screen_heigth-50:
+                    hero.health = 0
 
             screen.fill(SPACE)
 
