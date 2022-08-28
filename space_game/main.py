@@ -26,8 +26,9 @@ hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.hero_ship
 game_objs = stars, hero_bullets, enemy_bullets, heroes, enemies, hero, score
 
 pg.mouse.set_visible(mouse_visible)
-hero.score.score += 4900
+
 running_game = True
+
 state = GameState.menu
 menu = Menu(FontNames.broken_console, state, screen)
 pause = Pause(FontNames.broken_console, state, screen, hero)
