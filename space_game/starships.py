@@ -136,10 +136,9 @@ class StarShip(pg.sprite.Sprite):
             if pg.sprite.collide_mask(self, bullet):
                 if self.health > 0:
                     self.health -= bullet.damage
-                b_x = bullet.rect.centerx
-                b_y = bullet.rect.centery
+
+                self.bullet_detonation(bullet.rect.centerx, bullet.rect.centery)
                 bullet.kill()
-                self.bullet_detonation(b_x, b_y)
 
 
 class HeroStarShip(StarShip):
