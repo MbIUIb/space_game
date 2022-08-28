@@ -22,24 +22,49 @@ class ImageNames:
 
 
 class GameState(Enum):
+    begin_menu = 'begin_menu'
+    registration = 'registration'
+    login = 'login'
     menu = 'menu'
+    records = 'records'
     play = 'play'
     pause = 'pause'
     restart = 'restart'
     exit = 'exit'
 
 
+class BeginMenuState(Enum):
+    login = 'login'
+    register = 'register'
+    exit = 'exit'
+
+
+class RegistrState(Enum):
+    user_login = '__login__'
+    user_password = '__password__'
+    register = 'register'
+    back = 'back'
+
+
+class LoginState(Enum):
+    user_login = '__login__'
+    user_password = '__password__'
+    login = 'login'
+    back = 'back'
+
+
 class MenuState(Enum):
     play = 'new game'
     records = 'records'
     settings = 'settings'
+    logout = 'log out'
     exit = 'exit'
 
 
 class PauseState(Enum):
     resume = 'resume'
     restart = 'restart'
-    exit = 'exit'
+    exit = 'exit to menu'
 
 
 class DBAutentication(Enum):

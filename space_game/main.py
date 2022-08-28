@@ -3,7 +3,7 @@ from starships import HeroStarShip, create_enemy, ship_groups_collision
 from background_stars import create_stars
 from tools import Image
 from score import Score
-from menu import Menu, Pause
+from menu import BeginMenu, Registration, Login, Menu, Pause
 
 
 pg.init()
@@ -29,7 +29,10 @@ pg.mouse.set_visible(mouse_visible)
 
 running_game = True
 
-state = GameState.menu
+state = GameState.begin_menu
+begin_menu = BeginMenu(FontNames.broken_console, state, screen)
+registration = Registration(FontNames.broken_console, state, screen)
+login = Login(FontNames.broken_console, state, screen)
 menu = Menu(FontNames.broken_console, state, screen)
 pause = Pause(FontNames.broken_console, state, screen, hero)
 
@@ -42,10 +45,29 @@ while running_game:
             running_game = False
 
     match state:
+
+        case state.begin_menu:
+            begin_menu.update(events)
+            state = begin_menu.game_state
+            begin_menu.draw()
+
+        case state.registration:
+            registration.update(events)
+            state = registration.game_state
+            registration.draw()
+
+        case state.login:
+            login.update(events)
+            state = login.game_state
+            login.draw()
+
         case state.menu:
             menu.update(events)
             state = menu.game_state
             menu.draw()
+
+        case state.records:
+            pass
 
         case state.play:
             if keys[pg.K_ESCAPE]:

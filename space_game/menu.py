@@ -2,7 +2,7 @@ from enum import Enum
 
 import pygame as pg
 
-from config import MenuState, PauseState, MENU_NONACTIVE, MENU_ACTIVE
+from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, MENU_NONACTIVE, MENU_ACTIVE
 from tools import Image
 
 
@@ -78,6 +78,81 @@ class Base:
 
         return change_state
 
+    def draw(self):
+        self._screen.fill((0, 0, 0))
+
+        for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
+            color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
+            text = self._font.render(self._states[idx].value, False, color)
+            self._screen.blit(text, rect)
+
+
+class BeginMenu(Base):
+    def __init__(self, fontname: str, game_state, screen: pg.Surface,
+                 padding: int = 64, fontsize: int = 64):
+        self._states = tuple(BeginMenuState.__members__.values())
+        super().__init__(fontname, game_state, screen, padding, fontsize)
+
+    def update(self, keys):
+        self.game_state = self.game_state.begin_menu
+
+        if not self._change_state(keys):
+            return
+
+        match self._states[self._current]:
+            case BeginMenuState.login:
+                self.game_state = self.game_state.login
+            case BeginMenuState.register:
+                self.game_state = self.game_state.registration
+            case BeginMenuState.exit:
+                self.game_state = self.game_state.exit
+
+
+class Registration(Base):
+    def __init__(self, fontname: str, game_state, screen: pg.Surface,
+                 padding: int = 64, fontsize: int = 64):
+        self._states = tuple(RegistrState.__members__.values())
+        super().__init__(fontname, game_state, screen, padding, fontsize)
+
+    def update(self, keys):
+        self.game_state = self.game_state.registration
+
+        if not self._change_state(keys):
+            return
+
+        match self._states[self._current]:
+            case RegistrState.user_login:
+                pass
+            case RegistrState.user_password:
+                pass
+            case RegistrState.register:
+                self.game_state = self.game_state.menu
+            case RegistrState.back:
+                self.game_state = self.game_state.begin_menu
+
+
+class Login(Base):
+    def __init__(self, fontname: str, game_state, screen: pg.Surface,
+                 padding: int = 64, fontsize: int = 64):
+        self._states = tuple(LoginState.__members__.values())
+        super().__init__(fontname, game_state, screen, padding, fontsize)
+
+    def update(self, keys):
+        self.game_state = self.game_state.login
+
+        if not self._change_state(keys):
+            return
+
+        match self._states[self._current]:
+            case LoginState.user_login:
+                pass
+            case LoginState.user_password:
+                pass
+            case LoginState.login:
+                self.game_state = self.game_state.menu
+            case RegistrState.back:
+                self.game_state = self.game_state.begin_menu
+
 
 class Menu(Base):
     def __init__(self, fontname: str, game_state, screen: pg.Surface,
@@ -98,16 +173,10 @@ class Menu(Base):
                 pass
             case MenuState.settings:
                 pass
+            case MenuState.logout:
+                self.game_state = self.game_state.begin_menu
             case MenuState.exit:
                 self.game_state = self.game_state.exit
-
-    def draw(self):
-        self._screen.fill((0, 0, 0))
-
-        for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
-            color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
-            text = self._font.render(self._states[idx].value, False, color)
-            self._screen.blit(text, rect)
 
 
 class Pause(Base):
