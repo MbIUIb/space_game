@@ -40,15 +40,15 @@ class BeginMenuState(Enum):
 
 
 class RegistrState(Enum):
-    user_login = '__login__'
-    user_password = '__password__'
+    user_login = 'user_login'
+    user_password = 'user_password'
     register = 'register'
     back = 'back'
 
 
 class LoginState(Enum):
-    user_login = '__login__'
-    user_password = '__password__'
+    user_login = 'user_login'
+    user_password = 'user_password'
     login = 'login'
     back = 'back'
 

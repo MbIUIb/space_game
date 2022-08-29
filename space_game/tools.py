@@ -41,3 +41,15 @@ class Image:
         surf = pg.transform.smoothscale(self._surf, scale_size)
         surf = pg.transform.smoothscale(surf, surf_size)
         return Image(surf=surf)
+
+
+def input_text(events, input_text: str, inputing: bool):
+    for event in events:
+        if inputing and event.type == pg.KEYDOWN:
+            if event.key == pg.K_RETURN:
+                inputing = False
+            elif event.key == pg.K_BACKSPACE:
+                input_text = input_text[:-1]
+            else:
+                input_text += event.unicode
+    return input_text, inputing

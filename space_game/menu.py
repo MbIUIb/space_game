@@ -2,8 +2,9 @@ from enum import Enum
 
 import pygame as pg
 
-from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, MENU_NONACTIVE, MENU_ACTIVE
-from tools import Image
+from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE
+from tools import Image, input_text
+from database import Database
 
 
 class SettingsState(Enum):
@@ -18,6 +19,7 @@ class Base:
         self._screen: pg.Surface = screen
         self._padding = padding
         self._font = pg.font.Font(fontname, fontsize)
+        self._input_font = pg.font.Font(fontname, 52)
         if not self._states:
             self._states = tuple()
         self._texts = self._init_renders()
@@ -113,22 +115,62 @@ class Registration(Base):
                  padding: int = 64, fontsize: int = 64):
         self._states = tuple(RegistrState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
+        self.inputing_login = False
+        self.inputing_pswrd = False
+        self.user_login = 'log'
+        self.user_pswrd = 'pswrd'
 
-    def update(self, events):
+    def update(self, events, db: Database):
         self.game_state = self.game_state.registration
+
+        if self.inputing_login:
+            self.user_login, self.inputing_login = input_text(events, self.user_login, self.inputing_login)
+        if self.inputing_pswrd:
+            self.user_pswrd, self.inputing_pswrd = input_text(events, self.user_pswrd, self.inputing_pswrd)
 
         if not self._change_state(events):
             return
 
         match self._states[self._current]:
             case RegistrState.user_login:
-                pass
+                self.user_login = ''
+                self.inputing_pswrd = False
+                self.inputing_login = True
+
             case RegistrState.user_password:
-                pass
+                self.user_pswrd = ''
+                self.inputing_login = False
+                self.inputing_pswrd = True
+
             case RegistrState.register:
-                self.game_state = self.game_state.menu  # plug
+                if db.new_user(self.user_login, self.user_pswrd):
+                    self.game_state = self.game_state.menu
+                else:
+                    print(DBAutentication.login_error.value)
+
             case RegistrState.back:
                 self.game_state = self.game_state.begin_menu
+
+    def draw(self):
+        self._screen.fill((0, 0, 0))
+
+        for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
+            color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
+
+            if self._states[idx] == RegistrState.user_login:
+                text = self._input_font.render(self.user_login, False, color)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+            elif self._states[idx] == RegistrState.user_password:
+                text = self._input_font.render('*' * len(self.user_pswrd), False, color)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+            else:
+                text = self._font.render(self._states[idx].value, False, color)
+
+            self._screen.blit(text, rect)
 
 
 class Login(Base):
@@ -136,22 +178,65 @@ class Login(Base):
                  padding: int = 64, fontsize: int = 64):
         self._states = tuple(LoginState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
+        self.inputing_login = False
+        self.inputing_pswrd = False
+        self.user_login = 'log'
+        self.user_pswrd = 'pswrd'
 
-    def update(self, events):
+    def update(self, events, db):
         self.game_state = self.game_state.login
+
+        if self.inputing_login:
+            self.user_login, self.inputing_login = input_text(events, self.user_login, self.inputing_login)
+        if self.inputing_pswrd:
+            self.user_pswrd, self.inputing_pswrd = input_text(events, self.user_pswrd, self.inputing_pswrd)
 
         if not self._change_state(events):
             return
 
         match self._states[self._current]:
             case LoginState.user_login:
-                pass
+                self.user_login = ''
+                self.inputing_pswrd = False
+                self.inputing_login = True
+
             case LoginState.user_password:
-                pass
+                self.user_pswrd = ''
+                self.inputing_login = False
+                self.inputing_pswrd = True
+
             case LoginState.login:
-                self.game_state = self.game_state.menu  # plug
-            case RegistrState.back:
+                match db.authentication(self.user_login, self.user_pswrd):
+                    case DBAutentication.successful:
+                        self.game_state = self.game_state.menu
+                    case DBAutentication.login_error:
+                        print(DBAutentication.login_error.value)
+                    case DBAutentication.pass_error:
+                        print(DBAutentication.pass_error.value)
+
+            case LoginState.back:
                 self.game_state = self.game_state.begin_menu
+
+    def draw(self):
+        self._screen.fill((0, 0, 0))
+
+        for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
+            color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
+
+            if self._states[idx] == LoginState.user_login:
+                text = self._input_font.render(self.user_login, False, color)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+            elif self._states[idx] == LoginState.user_password:
+                text = self._input_font.render('*' * len(self.user_pswrd), False, color)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+            else:
+                text = self._font.render(self._states[idx].value, False, color)
+
+            self._screen.blit(text, rect)
 
 
 class Menu(Base):

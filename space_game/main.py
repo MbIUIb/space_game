@@ -4,6 +4,7 @@ from background_stars import create_stars
 from tools import Image
 from score import Score
 from menu import BeginMenu, Registration, Login, Menu, Pause
+from database import Database
 
 
 pg.init()
@@ -20,6 +21,7 @@ clock = pg.time.Clock()
 FLYING_STAR = pg.event.custom_type()
 pg.time.set_timer(FLYING_STAR, 70)
 
+db = Database()
 score = Score(FontNames.broken_console)
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.hero_ship1, 90,
                     heroes, score, max_health=200)
@@ -52,12 +54,12 @@ while running_game:
             begin_menu.draw()
 
         case state.registration:
-            registration.update(events)
+            registration.update(events, db)
             state = registration.game_state
             registration.draw()
 
         case state.login:
-            login.update(events)
+            login.update(events, db)
             state = login.game_state
             login.draw()
 
