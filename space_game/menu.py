@@ -93,10 +93,10 @@ class BeginMenu(Base):
         self._states = tuple(BeginMenuState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
 
-    def update(self, keys):
+    def update(self, events):
         self.game_state = self.game_state.begin_menu
 
-        if not self._change_state(keys):
+        if not self._change_state(events):
             return
 
         match self._states[self._current]:
@@ -114,10 +114,10 @@ class Registration(Base):
         self._states = tuple(RegistrState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
 
-    def update(self, keys):
+    def update(self, events):
         self.game_state = self.game_state.registration
 
-        if not self._change_state(keys):
+        if not self._change_state(events):
             return
 
         match self._states[self._current]:
@@ -126,7 +126,7 @@ class Registration(Base):
             case RegistrState.user_password:
                 pass
             case RegistrState.register:
-                self.game_state = self.game_state.menu
+                self.game_state = self.game_state.menu  # plug
             case RegistrState.back:
                 self.game_state = self.game_state.begin_menu
 
@@ -137,10 +137,10 @@ class Login(Base):
         self._states = tuple(LoginState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
 
-    def update(self, keys):
+    def update(self, events):
         self.game_state = self.game_state.login
 
-        if not self._change_state(keys):
+        if not self._change_state(events):
             return
 
         match self._states[self._current]:
@@ -149,7 +149,7 @@ class Login(Base):
             case LoginState.user_password:
                 pass
             case LoginState.login:
-                self.game_state = self.game_state.menu
+                self.game_state = self.game_state.menu  # plug
             case RegistrState.back:
                 self.game_state = self.game_state.begin_menu
 
@@ -160,10 +160,10 @@ class Menu(Base):
         self._states = tuple(MenuState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
 
-    def update(self, keys):
+    def update(self, events):
         self.game_state = self.game_state.menu
 
-        if not self._change_state(keys):
+        if not self._change_state(events):
             return
 
         match self._states[self._current]:
@@ -196,8 +196,8 @@ class Pause(Base):
     def screen(self, surf: pg.Surface):
         self._blured_surf = Image(surf=surf).blur(35).surf
 
-    def update(self, keys):
-        if not self._change_state(keys):
+    def update(self, events):
+        if not self._change_state(events):
             self.game_state = self.game_state.pause
             return
 
