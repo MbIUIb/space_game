@@ -1,8 +1,9 @@
 from enum import Enum
+from time import time
 
 import pygame as pg
 
-from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE
+from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE, screen_width
 from tools import Image, input_text
 from database import Database
 
@@ -20,6 +21,7 @@ class Base:
         self._padding = padding
         self._font = pg.font.Font(fontname, fontsize)
         self._input_font = pg.font.Font(fontname, 52)
+        self.error_font = pg.font.Font(fontname, 30)
         if not self._states:
             self._states = tuple()
         self._texts = self._init_renders()
@@ -119,6 +121,8 @@ class Registration(Base):
         self.inputing_pswrd = False
         self.user_login = 'log'
         self.user_pswrd = 'pswrd'
+        self.error = ''
+        self.error_time = 0
 
     def update(self, events, db: Database):
         self.game_state = self.game_state.registration
@@ -146,13 +150,20 @@ class Registration(Base):
                 if db.new_user(self.user_login, self.user_pswrd):
                     self.game_state = self.game_state.menu
                 else:
-                    print(DBAutentication.login_error.value)
+                    self.error = 'this login is already occupied'
+                    self.error_time = time()
 
             case RegistrState.back:
                 self.game_state = self.game_state.begin_menu
 
     def draw(self):
         self._screen.fill((0, 0, 0))
+
+        if self.error:
+            if time() - self.error_time < 5:
+                _score_surf = self.error_font.render(f'{self.error}', True, MENU_NONACTIVE)
+                _score_rect = _score_surf.get_rect(center=(screen_width//2, 50))
+                self._screen.blit(_score_surf, _score_rect)
 
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
@@ -182,6 +193,8 @@ class Login(Base):
         self.inputing_pswrd = False
         self.user_login = 'log'
         self.user_pswrd = 'pswrd'
+        self.error = ''
+        self.error_time = 0
 
     def update(self, events, db):
         self.game_state = self.game_state.login
@@ -210,15 +223,23 @@ class Login(Base):
                     case DBAutentication.successful:
                         self.game_state = self.game_state.menu
                     case DBAutentication.login_error:
-                        print(DBAutentication.login_error.value)
+                        self.error = DBAutentication.login_error.value
+                        self.error_time = time()
                     case DBAutentication.pass_error:
-                        print(DBAutentication.pass_error.value)
+                        self.error = DBAutentication.pass_error.value
+                        self.error_time = time()
 
             case LoginState.back:
                 self.game_state = self.game_state.begin_menu
 
     def draw(self):
         self._screen.fill((0, 0, 0))
+
+        if self.error:
+            if time() - self.error_time < 5:
+                _score_surf = self.error_font.render(f'{self.error}', True, MENU_NONACTIVE)
+                _score_rect = _score_surf.get_rect(center=(screen_width//2, 50))
+                self._screen.blit(_score_surf, _score_rect)
 
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
