@@ -21,6 +21,7 @@ clock = pg.time.Clock()
 FLYING_STAR = pg.event.custom_type()
 pg.time.set_timer(FLYING_STAR, 70)
 
+user_login = ''
 db = Database()
 score = Score(FontNames.broken_console)
 hero = HeroStarShip(screen_width // 2, screen_heigth - 100, ImageNames.hero_ship1, 90,
@@ -56,16 +57,22 @@ while running_game:
         case state.registration:
             registration.update(events, db)
             state = registration.game_state
+            user_login = registration.user_login
             registration.draw()
 
         case state.login:
             login.update(events, db)
             state = login.game_state
+            user_login = login.user_login
             login.draw()
 
         case state.menu:
-            menu.update(events)
+            menu.update(events, db)
             state = menu.game_state
+            if state == GameState.begin_menu:
+                user_login = ''
+                login.user_login = registration.user_login = 'log'
+                login.user_pswrd = registration.user_pswrd = 'pswrd'
             menu.draw()
 
         case state.records:
@@ -142,7 +149,7 @@ while running_game:
             score.draw()
 
         case state.pause:
-            pause.update(events)
+            pause.update(events, db, user_login)
             state = pause.game_state
             pause.draw()
 

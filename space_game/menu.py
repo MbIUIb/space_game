@@ -245,7 +245,7 @@ class Menu(Base):
         self._states = tuple(MenuState.__members__.values())
         super().__init__(fontname, game_state, screen, padding, fontsize)
 
-    def update(self, events):
+    def update(self, events, db: Database):
         self.game_state = self.game_state.menu
 
         if not self._change_state(events):
@@ -255,13 +255,17 @@ class Menu(Base):
             case MenuState.play:
                 self.game_state = self.game_state.restart
             case MenuState.records:
-                pass
+                print(db.top_score())  # plug
             case MenuState.settings:
                 pass
             case MenuState.logout:
                 self.game_state = self.game_state.begin_menu
             case MenuState.exit:
                 self.game_state = self.game_state.exit
+
+
+class Records(Base):
+    pass
 
 
 class Pause(Base):
@@ -281,10 +285,15 @@ class Pause(Base):
     def screen(self, surf: pg.Surface):
         self._blured_surf = Image(surf=surf).blur(35).surf
 
-    def update(self, events):
+    def update(self, events, db: Database, user_login):
         if not self._change_state(events):
             self.game_state = self.game_state.pause
             return
+
+        if self._hero.health <= 0:
+            score = self._hero.score.score
+            if score > db.get_user_score(user_login):
+                db.change_score(user_login, score)
 
         match self._states[self._current]:
             case PauseState.resume:
