@@ -3,7 +3,7 @@ from time import time
 
 import pygame as pg
 
-from config import BeginMenuState, RegistrState, LoginState, MenuState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE, screen_width
+from config import BeginMenuState, RegistrState, LoginState, MenuState, RecordsState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE, screen_width
 from tools import Image, input_text
 from database import Database
 
@@ -276,7 +276,7 @@ class Menu(Base):
             case MenuState.play:
                 self.game_state = self.game_state.restart
             case MenuState.records:
-                print(db.top_score())  # plug
+                self.game_state = self.game_state.records
             case MenuState.settings:
                 pass
             case MenuState.logout:
@@ -286,7 +286,38 @@ class Menu(Base):
 
 
 class Records(Base):
-    pass
+    def __init__(self, fontname: str, game_state, screen: pg.Surface,
+                 padding: int = 30, fontsize: int = 30):
+        self._states = tuple(RecordsState.__members__.values())
+        super().__init__(fontname, game_state, screen, padding, fontsize)
+
+    def update(self, events):
+        self.game_state = self.game_state.records
+
+        if not self._change_state(events):
+            return
+
+        match self._states[self._current]:
+            case RecordsState.back:
+                self.game_state = self.game_state.menu
+
+    def draw(self, db: Database):
+        self._screen.fill((0, 0, 0))
+        top_score = db.top_score()
+
+        for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
+            color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
+            text = self._font.render(self._states[idx].value, False, color)
+
+            if idx < len(RecordsState.__members__.values())-1:
+                name = top_score[idx][0] if len(top_score[idx][0]) < 30 else top_score[idx][0][:27]+'...'
+                score = str(top_score[idx][1]) if len(str(top_score[idx][1])) < 10 else str(top_score[idx][1])[:8]+'..'
+                text = self._font.render(f"{str(idx+1)}. {name.ljust(30)+score.rjust(10)}", False, MENU_ACTIVE)
+                center = rect.center
+                rect = text.get_rect()
+                rect.center = center
+
+            self._screen.blit(text, rect)
 
 
 class Pause(Base):

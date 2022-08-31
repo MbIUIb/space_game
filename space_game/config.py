@@ -61,6 +61,20 @@ class MenuState(Enum):
     exit = 'exit'
 
 
+class RecordsState(Enum):
+    pos1 = 'pos1'
+    pos2 = 'pos2'
+    pos3 = 'pos3'
+    pos4 = 'pos4'
+    pos5 = 'pos5'
+    pos6 = 'pos6'
+    pos7 = 'pos7'
+    pos8 = 'pos8'
+    pos9 = 'pos9'
+    pos10 = 'pos10'
+    back = 'back'
+
+
 class PauseState(Enum):
     resume = 'resume'
     restart = 'restart'

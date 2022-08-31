@@ -3,7 +3,7 @@ from starships import HeroStarShip, create_enemy, ship_groups_collision
 from background_stars import create_stars
 from tools import Image
 from score import Score
-from menu import BeginMenu, Registration, Login, Menu, Pause
+from menu import BeginMenu, Registration, Login, Menu, Records, Pause
 from database import Database
 
 
@@ -37,6 +37,7 @@ begin_menu = BeginMenu(FontNames.broken_console, state, screen)
 registration = Registration(FontNames.broken_console, state, screen)
 login = Login(FontNames.broken_console, state, screen)
 menu = Menu(FontNames.broken_console, state, screen)
+records = Records(FontNames.broken_console, state, screen)
 pause = Pause(FontNames.broken_console, state, screen, hero)
 
 while running_game:
@@ -76,7 +77,9 @@ while running_game:
             menu.draw()
 
         case state.records:
-            pass
+            records.update(events)
+            state = records.game_state
+            records.draw(db)
 
         case state.play:
             if keys[pg.K_ESCAPE]:
