@@ -328,6 +328,7 @@ class Pause(Base):
 
         self._blured_surf = Image(surf=self._screen).blur(35).surf
         self._hero = hero
+        self.save_score = False
 
     @property
     def screen(self):
@@ -338,14 +339,15 @@ class Pause(Base):
         self._blured_surf = Image(surf=surf).blur(35).surf
 
     def update(self, events, db: Database, user_login):
-        if not self._change_state(events):
-            self.game_state = self.game_state.pause
-            return
-
-        if self._hero.health <= 0:
+        if self._hero.health <= 0 and not self.save_score:
+            self.save_score = True
             score = self._hero.score.score
             if score > db.get_user_score(user_login):
                 db.change_score(user_login, score)
+
+        if not self._change_state(events):
+            self.game_state = self.game_state.pause
+            return
 
         match self._states[self._current]:
             case PauseState.resume:
@@ -353,8 +355,10 @@ class Pause(Base):
                     return
                 self.game_state = self.game_state.play
             case PauseState.restart:
+                self.save_score = False
                 self.game_state = self.game_state.restart
             case PauseState.exit:
+                self.save_score = False
                 self.game_state = self.game_state.menu
 
     def draw(self):
