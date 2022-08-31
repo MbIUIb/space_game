@@ -52,7 +52,8 @@ class Database:
 
     def get_user_score(self, login):
         score = self.cursor.execute("""SELECT score FROM users WHERE login == ?""", (login,)).fetchone()[0]
-        return int(score) if score is int else 0
+        print('sc:', score)
+        return int(score) if isinstance(score, int) else 0
 
     def change_score(self, login, score):
         self.cursor.execute("""UPDATE users set score = ? WHERE login == ?""", (score, login))
