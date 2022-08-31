@@ -3,7 +3,7 @@ from time import time
 
 import pygame as pg
 
-from config import BeginMenuState, RegistrState, LoginState, MenuState, RecordsState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE, screen_width
+from config import BeginMenuState, RegistrState, LoginState, MenuState, RecordsState, PauseState, DBAutentication, MENU_NONACTIVE, MENU_ACTIVE, screen_width, SELF_NAME
 from tools import Image, input_text
 from database import Database
 
@@ -309,8 +309,11 @@ class Records(Base):
 
         for (name, _) in top_score:
             if user_name == name:
-                user_name = 'you in top 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                self_bar = 'you in top 10!!!'.center(65)
                 user_score = ''
+                break
+            else:
+                self_bar = user_name
 
         top_score.append((user_name, user_score))
 
@@ -318,22 +321,22 @@ class Records(Base):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
             text = self._font.render(self._states[idx].value, False, color)
 
-            if idx < len(RecordsState.__members__.values())-2:
-                name = top_score[idx][0] if len(top_score[idx][0]) < 25 else top_score[idx][0][:22]+'...'
-                score = str(top_score[idx][1]) if len(str(top_score[idx][1])) < 10 else str(top_score[idx][1])[:8]+'..'
-                text = self._font.render(f"{str(idx+1)}. {name}", False, MENU_ACTIVE)
-                score_text = self._font.render(f"{score}", False, MENU_ACTIVE)
+            if idx < len(RecordsState.__members__.values())-1:
+                if idx == 10:
+                    text = self._font.render(f"{self_bar}", False, SELF_NAME)
+                    score_text = self._font.render(f"{user_score}", False, SELF_NAME)
+                else:
+                    if user_name == top_score[idx][0]:
+                        color = SELF_NAME
+                    else:
+                        color = MENU_ACTIVE
+                    name = top_score[idx][0] if len(top_score[idx][0]) < 25 else top_score[idx][0][:22]+'...'
+                    score = str(top_score[idx][1]) if len(str(top_score[idx][1])) < 10 else str(top_score[idx][1])[:8]+'..'
+                    text = self._font.render(f"{str(idx+1)}. {name}", False, color)
+                    score_text = self._font.render(f"{score}", False, color)
                 center = rect.center
                 rect = text.get_rect(midleft=(50,center[1]))
                 score_rect = text.get_rect(midleft=(screen_width-170, center[1]))
-                self._screen.blit(score_text, score_rect)
-
-            if idx == 10:
-                text = self._font.render(f"{user_name}", False, MENU_ACTIVE)
-                score_text = self._font.render(f"{user_score}", False, MENU_ACTIVE)
-                center = rect.center
-                rect = text.get_rect(midleft=(50, center[1]))
-                score_rect = text.get_rect(midleft=(screen_width - 170, center[1]))
                 self._screen.blit(score_text, score_rect)
 
             self._screen.blit(text, rect)
