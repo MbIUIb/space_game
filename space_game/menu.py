@@ -301,21 +301,40 @@ class Records(Base):
             case RecordsState.back:
                 self.game_state = self.game_state.menu
 
-    def draw(self, db: Database):
+    def draw(self, db: Database, login):
         self._screen.fill((0, 0, 0))
+        user_name = login
+        user_score = db.get_user_score(user_name)
         top_score = db.top_score()
+
+        for (name, _) in top_score:
+            if user_name == name:
+                user_name = 'you in top 10!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                user_score = ''
+
+        top_score.append((user_name, user_score))
 
         for idx, (text, rect) in enumerate(zip(self._texts, self._texts_rects)):
             color = MENU_ACTIVE if idx == self._current else MENU_NONACTIVE
             text = self._font.render(self._states[idx].value, False, color)
 
-            if idx < len(RecordsState.__members__.values())-1:
-                name = top_score[idx][0] if len(top_score[idx][0]) < 30 else top_score[idx][0][:27]+'...'
+            if idx < len(RecordsState.__members__.values())-2:
+                name = top_score[idx][0] if len(top_score[idx][0]) < 25 else top_score[idx][0][:22]+'...'
                 score = str(top_score[idx][1]) if len(str(top_score[idx][1])) < 10 else str(top_score[idx][1])[:8]+'..'
-                text = self._font.render(f"{str(idx+1)}. {name.ljust(30)+score.rjust(10)}", False, MENU_ACTIVE)
+                text = self._font.render(f"{str(idx+1)}. {name}", False, MENU_ACTIVE)
+                score_text = self._font.render(f"{score}", False, MENU_ACTIVE)
                 center = rect.center
-                rect = text.get_rect()
-                rect.center = center
+                rect = text.get_rect(midleft=(50,center[1]))
+                score_rect = text.get_rect(midleft=(screen_width-170, center[1]))
+                self._screen.blit(score_text, score_rect)
+
+            if idx == 10:
+                text = self._font.render(f"{user_name}", False, MENU_ACTIVE)
+                score_text = self._font.render(f"{user_score}", False, MENU_ACTIVE)
+                center = rect.center
+                rect = text.get_rect(midleft=(50, center[1]))
+                score_rect = text.get_rect(midleft=(screen_width - 170, center[1]))
+                self._screen.blit(score_text, score_rect)
 
             self._screen.blit(text, rect)
 

@@ -79,7 +79,7 @@ while running_game:
         case state.records:
             records.update(events)
             state = records.game_state
-            records.draw(db)
+            records.draw(db, user_login)
 
         case state.play:
             if keys[pg.K_ESCAPE]:

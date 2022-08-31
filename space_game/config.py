@@ -72,6 +72,7 @@ class RecordsState(Enum):
     pos8 = 'pos8'
     pos9 = 'pos9'
     pos10 = 'pos10'
+    user_pos = 'user pos'
     back = 'back'
 
 
