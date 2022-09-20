@@ -168,6 +168,8 @@ class HeroStarShip(StarShip):
 
     def restart(self):
         self.add(self.group)
+        self.lvl = 1
+        self.bullet_damage = 10
         self.rect = self.image.get_rect(center=(self.begin_x, self.begin_y))
         self.health = self.max_health
         self.score.score = 0
@@ -219,7 +221,6 @@ class EnemyStarShip(StarShip):
                     self.x_direction *= -1
                     self.rect.centery += screen_heigth // 20
                 self.rect.centerx += self.speed * self.x_direction
-
 
 
 def create_enemy(score: Score, max_health=100, score_points=100):
